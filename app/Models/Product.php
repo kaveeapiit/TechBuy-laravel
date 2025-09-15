@@ -9,6 +9,15 @@ use Illuminate\Support\Str;
 
 class Product extends Model
 {
+    /**
+     * The database connection name for the model.
+     *
+     * Note: Temporarily using PostgreSQL until MongoDB PHP extension is installed
+     * TODO: Change to 'mongodb' after installing ext-mongodb
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
     protected $fillable = [
         'name',
         'slug',

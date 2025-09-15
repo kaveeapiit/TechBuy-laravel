@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderItem extends Model
 {
+    /**
+     * The database connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
     protected $fillable = [
         'order_id',
         'product_id',

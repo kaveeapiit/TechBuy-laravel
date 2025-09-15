@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cart extends Model
 {
+    /**
+     * The database connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
     protected $fillable = [
         'user_id',
         'session_id',

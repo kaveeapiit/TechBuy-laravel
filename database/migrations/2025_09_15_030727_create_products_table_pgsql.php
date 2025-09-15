@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->text('short_description')->nullable();
             $table->decimal('price', 10, 2);
             $table->decimal('sale_price', 10, 2)->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->decimal('weight', 8, 2)->nullable();
-            $table->string('dimensions')->nullable();
+            $table->json('dimensions')->nullable();
             $table->timestamps();
         });
     }

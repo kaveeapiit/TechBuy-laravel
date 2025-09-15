@@ -23,6 +23,13 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     /**
+     * The database connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

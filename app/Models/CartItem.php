@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CartItem extends Model
 {
+    /**
+     * The database connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
     protected $fillable = [
         'cart_id',
         'product_id',
