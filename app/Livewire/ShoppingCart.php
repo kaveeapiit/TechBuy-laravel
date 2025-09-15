@@ -50,6 +50,7 @@ class ShoppingCart extends Component
         if ($cartItem && $cartItem->cart->user_id === Auth::id()) {
             $cartItem->update(['quantity' => $quantity]);
             $this->loadCart();
+            $this->dispatch('cart-updated');
         }
     }
 
@@ -59,6 +60,7 @@ class ShoppingCart extends Component
         if ($cartItem && $cartItem->cart->user_id === Auth::id()) {
             $cartItem->delete();
             $this->loadCart();
+            $this->dispatch('cart-updated');
         }
     }
 
@@ -69,6 +71,7 @@ class ShoppingCart extends Component
             if ($cart) {
                 $cart->items()->delete();
                 $this->loadCart();
+                $this->dispatch('cart-updated');
             }
         }
     }
