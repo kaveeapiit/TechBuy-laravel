@@ -1,24 +1,24 @@
-<nav x-data="{ open: false }" class="bg-white/95 backdrop-blur-sm border-b border-primary-200 shadow-sm">
+<nav x-data="{ open: false }" class="glass-panel backdrop-blur-xl border-white/10 shadow-tech relative z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-sm">TB</span>
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 group">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary-500 to-accent-500 rounded-xl flex items-center justify-center shadow-glow group-hover:shadow-glow-lg transition-all duration-300">
+                            <span class="text-white font-bold text-lg font-display">TB</span>
                         </div>
-                        <span class="text-xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">TechBuy</span>
+                        <span class="text-2xl font-bold font-display neon-text">TechBuy</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="nav-link">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+                    <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')" class="nav-link">
                         {{ __('Shop') }}
                     </x-nav-link>
                 </div>
@@ -27,8 +27,8 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Cart Icon -->
                 @auth
-                <div class="me-3">
-                    <a href="{{ route('cart') }}" class="relative inline-flex items-center p-2 text-secondary-600 hover:text-primary-600 transition duration-200">
+                <div class="me-4">
+                    <a href="{{ route('cart') }}" class="relative inline-flex items-center p-3 text-gray-300 hover:text-primary-400 transition-all duration-300 rounded-xl hover:bg-white/10 glow-on-hover">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 9.5M15 7l-1.5 9.5"></path>
                         </svg>

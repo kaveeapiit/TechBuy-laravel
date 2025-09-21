@@ -1,7 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 [x-cloak] {
     display: none;
+}
+
+/* Modern Tech Base Styles */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        @apply font-sans antialiased;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b  50%, #334155 100%);
+        background-attachment: fixed;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        @apply bg-dark-100;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        @apply bg-primary-500 rounded-full;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-primary-400;
+    }
+}
+
+/* Tech Component Styles */
+@layer components {
+    .tech-card {
+        @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-tech;
+    }
+    
+    .tech-button {
+        @apply relative overflow-hidden bg-gradient-to-r from-primary-500 to-accent-500 text-white font-medium px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-glow hover:scale-105;
+    }
+    
+    .tech-button:before {
+        content: '';
+        @apply absolute inset-0 bg-gradient-to-r from-primary-400 to-accent-400 opacity-0 transition-opacity duration-300;
+    }
+    
+    .tech-button:hover:before {
+        @apply opacity-100;
+    }
+    
+    .tech-input {
+        @apply bg-dark-50/50 backdrop-blur-sm border border-primary-200/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/50 focus:outline-none transition-all duration-300;
+    }
+    
+    .neon-text {
+        @apply text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-accent-400 to-neon-400;
+        text-shadow: 0 0 30px rgba(14, 165, 233, 0.5);
+    }
+    
+    .glass-panel {
+        @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl;
+    }
+    
+    .tech-grid-bg {
+        background-image: 
+            linear-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+    
+    .floating-element {
+        @apply animate-float;
+    }
+    
+    .glow-on-hover {
+        @apply transition-all duration-300 hover:shadow-glow hover:shadow-primary-400/50;
+    }
+    
+    /* Navigation Styles */
+    .nav-link {
+        @apply relative text-gray-300 hover:text-white transition-colors duration-300 font-medium;
+    }
+    
+    .nav-link:after {
+        content: '';
+        @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-400 transition-all duration-300;
+    }
+    
+    .nav-link:hover:after,
+    .nav-link.active:after {
+        @apply w-full;
+    }
+    
+    /* Status badges */
+    .status-badge {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border;
+    }
+    
+    .status-confirmed {
+        @apply bg-tech-500/20 text-tech-400 border-tech-400/30;
+    }
+    
+    .status-pending {
+        @apply bg-warning-500/20 text-warning-400 border-warning-400/30;
+    }
+    
+    .status-failed {
+        @apply bg-danger-500/20 text-danger-400 border-danger-400/30;
+    }
+}
+
+/* Utility Classes */
+@layer utilities {
+    .text-glow {
+        text-shadow: 0 0 20px currentColor;
+    }
+    
+    .border-glow {
+        box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+    }
+    
+    .bg-tech-gradient {
+        background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #22c55e 100%);
+    }
+    
+    .bg-dark-gradient {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    }
+}
+
+/* Animation Enhancements */
+@keyframes matrix-rain {
+    0% { transform: translateY(-100vh); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes pulse-neon {
+    0%, 100% { 
+        box-shadow: 0 0 5px #0ea5e9, 0 0 20px #0ea5e9, 0 0 35px #0ea5e9;
+    }
+    50% { 
+        box-shadow: 0 0 10px #06b6d4, 0 0 30px #06b6d4, 0 0 50px #06b6d4;
+    }
+}
+
+.matrix-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.matrix-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(45deg, transparent 30%, rgba(14, 165, 233, 0.05) 30%, rgba(14, 165, 233, 0.05) 70%, transparent 70%),
+        linear-gradient(-45deg, transparent 30%, rgba(6, 182, 212, 0.05) 30%, rgba(6, 182, 212, 0.05) 70%, transparent 70%);
+    background-size: 40px 40px;
+    animation: matrix-rain 20s linear infinite;
+    pointer-events: none;
 }
