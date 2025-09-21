@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class CheckoutProcess extends Component
@@ -44,10 +45,10 @@ class CheckoutProcess extends Component
         'city' => 'required|string|min:2',
         'state' => 'required|string|min:2',
         'zipCode' => 'required|string|min:5',
-        'cardNumber' => 'required|string|min:16|max:19',
-        'expiryDate' => 'required|string|min:5|max:5',
-        'cvv' => 'required|string|min:3|max:4',
-        'cardName' => 'required|string|min:2',
+        'cardNumber' => 'required_if:paymentMethod,card|string|min:16|max:19',
+        'expiryDate' => 'required_if:paymentMethod,card|string|min:5|max:5',
+        'cvv' => 'required_if:paymentMethod,card|string|min:3|max:4',
+        'cardName' => 'required_if:paymentMethod,card|string|min:2',
     ];
 
     public function mount()
@@ -111,10 +112,10 @@ class CheckoutProcess extends Component
                 'user_id' => Auth::id(),
                 'order_number' => 'TB-' . strtoupper(uniqid()),
                 'status' => 'pending',
-                'subtotal' => $this->total,
-                'tax_amount' => $this->tax,
                 'total_amount' => $this->grandTotal,
-                'shipping_address' => json_encode([
+                'tax_amount' => $this->tax,
+                'shipping_amount' => 0, // Free shipping
+                'billing_address' => [
                     'first_name' => $this->firstName,
                     'last_name' => $this->lastName,
                     'email' => $this->email,
@@ -124,7 +125,18 @@ class CheckoutProcess extends Component
                     'state' => $this->state,
                     'zip_code' => $this->zipCode,
                     'country' => $this->country,
-                ]),
+                ],
+                'shipping_address' => [
+                    'first_name' => $this->firstName,
+                    'last_name' => $this->lastName,
+                    'email' => $this->email,
+                    'phone' => $this->phone,
+                    'address' => $this->address,
+                    'city' => $this->city,
+                    'state' => $this->state,
+                    'zip_code' => $this->zipCode,
+                    'country' => $this->country,
+                ],
                 'payment_method' => $this->paymentMethod,
                 'payment_status' => 'pending',
             ]);
@@ -134,6 +146,8 @@ class CheckoutProcess extends Component
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
+                    'product_name' => $item['product']['name'] ?? 'Unknown Product',
+                    'product_sku' => $item['product']['sku'] ?? 'N/A',
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
                     'total' => $item['quantity'] * $item['price'],
@@ -154,10 +168,11 @@ class CheckoutProcess extends Component
             session()->flash('success', 'Order placed successfully! Order number: ' . $order->order_number);
             $this->dispatch('cart-updated');
 
-            return redirect()->route('dashboard');
+            return redirect()->route('order.success', ['order' => $order->order_number]);
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', 'Failed to place order. Please try again.');
+            Log::error('Order creation failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to place order. Please try again. Error: ' . $e->getMessage());
         }
     }
 

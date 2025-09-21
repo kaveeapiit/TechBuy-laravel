@@ -24,4 +24,11 @@ Route::middleware([
     Route::get('/checkout', function () {
         return view('checkout');
     })->name('checkout');
+
+    Route::get('/order/success/{order}', function ($orderNumber) {
+        $order = \App\Models\Order::where('order_number', $orderNumber)
+            ->where('user_id', \Illuminate\Support\Facades\Auth::id())
+            ->firstOrFail();
+        return view('order-success', compact('order'));
+    })->name('order.success');
 });
