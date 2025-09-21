@@ -12,7 +12,7 @@ class ShoppingCart extends Component
     public $cartItems = [];
     public $total = 0;
 
-    protected $listeners = ['cart-updated' => 'loadCart'];
+    protected $listeners = ['cart-updated' => '$refresh'];
 
     public function mount()
     {
@@ -85,6 +85,7 @@ class ShoppingCart extends Component
 
     public function render()
     {
+        $this->loadCart();
         return view('livewire.shopping-cart');
     }
 }

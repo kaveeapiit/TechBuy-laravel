@@ -9,28 +9,19 @@ use Livewire\Component;
 
 class CartCount extends Component
 {
-    public $count = 0;
+    protected $listeners = ['cart-updated' => '$refresh'];
 
-    protected $listeners = ['cart-updated' => 'updateCount'];
-
-    public function mount()
-    {
-        $this->updateCount();
-    }
-
-    public function updateCount()
+    public function getCountProperty()
     {
         if (Auth::check()) {
             $cart = Cart::where('user_id', Auth::id())->first();
 
             if ($cart) {
-                $this->count = CartItem::where('cart_id', $cart->id)->sum('quantity');
-            } else {
-                $this->count = 0;
+                return CartItem::where('cart_id', $cart->id)->sum('quantity');
             }
-        } else {
-            $this->count = 0;
         }
+
+        return 0;
     }
 
     public function render()

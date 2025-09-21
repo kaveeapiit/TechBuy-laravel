@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Livewire\CartCount;
 use Livewire\Component;
 
 class ProductDetail extends Component
@@ -58,6 +59,7 @@ class ProductDetail extends Component
         }
 
         $this->dispatch('cart-updated');
+        $this->js('$dispatch("cart-updated")');
         session()->flash('message', 'Product added to cart successfully!');
     }
 

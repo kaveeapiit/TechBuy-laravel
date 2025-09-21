@@ -58,7 +58,7 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 4M7 13v6a2 2 0 002 2h6a2 2 0 002-2v-6"></path>
                         </svg>
-                        <span class="absolute -top-1 -right-1 bg-gradient-to-r from-primary-500 to-accent-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shadow-glow font-mono">0</span>
+                        @livewire('cart-count')
                     </a>
 
                     <!-- User menu -->
