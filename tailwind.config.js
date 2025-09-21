@@ -15,14 +15,18 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Inter", "system-ui", ...defaultTheme.fontFamily.sans],
-                mono: ["JetBrains Mono", "Fira Code", ...defaultTheme.fontFamily.mono],
+                mono: [
+                    "JetBrains Mono",
+                    "Fira Code",
+                    ...defaultTheme.fontFamily.mono,
+                ],
                 display: ["Orbitron", "Inter", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 // Modern Tech Color Palette
                 primary: {
                     50: "#f0f9ff",
-                    100: "#e0f2fe", 
+                    100: "#e0f2fe",
                     200: "#bae6fd",
                     300: "#7dd3fc",
                     400: "#38bdf8",
@@ -139,34 +143,36 @@ export default {
                 },
             },
             backgroundImage: {
-                'tech-grid': "url(\"data:image/svg+xml,%3csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg fill='%230ea5e9' fill-opacity='0.05'%3e%3ccircle cx='30' cy='30' r='2'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e\")",
-                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                "tech-grid":
+                    "url(\"data:image/svg+xml,%3csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg fill='%230ea5e9' fill-opacity='0.05'%3e%3ccircle cx='30' cy='30' r='2'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e\")",
+                "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+                "gradient-conic":
+                    "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
             },
             animation: {
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'bounce-slow': 'bounce 2s infinite',
-                'glow': 'glow 2s ease-in-out infinite alternate',
-                'float': 'float 3s ease-in-out infinite',
+                "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                "bounce-slow": "bounce 2s infinite",
+                glow: "glow 2s ease-in-out infinite alternate",
+                float: "float 3s ease-in-out infinite",
             },
             keyframes: {
                 glow: {
-                    'from': { boxShadow: '0 0 20px #0ea5e9' },
-                    'to': { boxShadow: '0 0 30px #06b6d4, 0 0 40px #06b6d4' },
+                    from: { boxShadow: "0 0 20px #0ea5e9" },
+                    to: { boxShadow: "0 0 30px #06b6d4, 0 0 40px #06b6d4" },
                 },
                 float: {
-                    '0%, 100%': { transform: 'translateY(0px)' },
-                    '50%': { transform: 'translateY(-10px)' },
+                    "0%, 100%": { transform: "translateY(0px)" },
+                    "50%": { transform: "translateY(-10px)" },
                 },
             },
             boxShadow: {
-                'glow': '0 0 20px rgba(14, 165, 233, 0.5)',
-                'glow-lg': '0 0 30px rgba(14, 165, 233, 0.8)',
-                'neon': '0 0 5px theme(colors.neon.400), 0 0 20px theme(colors.neon.400), 0 0 35px theme(colors.neon.400)',
-                'tech': '0 8px 32px rgba(14, 165, 233, 0.3)',
+                glow: "0 0 20px rgba(14, 165, 233, 0.5)",
+                "glow-lg": "0 0 30px rgba(14, 165, 233, 0.8)",
+                neon: "0 0 5px theme(colors.neon.400), 0 0 20px theme(colors.neon.400), 0 0 35px theme(colors.neon.400)",
+                tech: "0 8px 32px rgba(14, 165, 233, 0.3)",
             },
             backdropBlur: {
-                xs: '2px',
+                xs: "2px",
             },
         },
     },

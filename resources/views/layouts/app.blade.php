@@ -26,7 +26,7 @@
         <div class="min-h-screen bg-dark-gradient relative">
             <!-- Tech grid overlay -->
             <div class="absolute inset-0 tech-grid-bg opacity-20 pointer-events-none"></div>
-            
+
             @livewire('navigation-menu')
 
             <!-- Page Heading -->

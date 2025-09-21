@@ -4,44 +4,56 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+<section class="relative bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
+    <!-- Tech Grid Background -->
+    <div class="absolute inset-0 opacity-20">
+        <div class="tech-grid"></div>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="absolute inset-0">
+        <div class="floating-element absolute top-20 left-10 w-2 h-2 bg-primary-400 rounded-full"></div>
+        <div class="floating-element absolute top-32 right-20 w-3 h-3 bg-accent-400 rounded-full" style="animation-delay: 1s;"></div>
+        <div class="floating-element absolute bottom-40 left-1/4 w-1 h-1 bg-secondary-400 rounded-full" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                Welcome to <span class="text-yellow-300">TechBuy</span>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 font-display">
+                Welcome to <span class="neon-text bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent">TechBuy</span>
             </h1>
-            <p class="text-xl md:text-2xl mb-8 text-blue-100">
+            <p class="text-xl md:text-2xl mb-8 text-gray-300 font-light">
                 Discover the latest in premium electronics and cutting-edge technology
             </p>
-            <a href="{{ route('products') }}" class="inline-block bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition duration-300">
-                Shop Now
+            <a href="{{ route('products') }}" class="tech-button inline-block">
+                <span class="relative z-10">Shop Now</span>
             </a>
         </div>
     </div>
 </section>
 
 <!-- Categories Section -->
-<section class="py-16">
+<section class="py-16 bg-gradient-to-b from-gray-900 to-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+        <h2 class="text-3xl font-bold text-center mb-12 text-white font-display">Shop by Category</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             @foreach($categories as $category)
             <a href="{{ route('category', $category->slug) }}" class="group">
-                <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition duration-300 text-center">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition duration-300">
+                <div class="tech-card p-6 text-center hover:shadow-glow transition-all duration-300 transform hover:scale-105">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow group-hover:shadow-glow-lg transition-all duration-300">
                         @if($category->slug === 'iphones')
-                        📱
+                        <span class="text-2xl">📱</span>
                         @elseif($category->slug === 'macbooks')
-                        💻
+                        <span class="text-2xl">💻</span>
                         @elseif($category->slug === 'android-phones')
-                        📱
+                        <span class="text-2xl">📱</span>
                         @elseif($category->slug === 'laptops')
-                        💻
+                        <span class="text-2xl">💻</span>
                         @else
-                        🔧
+                        <span class="text-2xl">🔧</span>
                         @endif
                     </div>
-                    <h3 class="font-semibold text-gray-900 group-hover:text-blue-600">{{ $category->name }}</h3>
+                    <h3 class="font-semibold text-white group-hover:text-primary-400 transition-colors duration-300 font-display">{{ $category->name }}</h3>
                 </div>
             </a>
             @endforeach
@@ -50,19 +62,19 @@
 </section>
 
 <!-- Featured Products -->
-<section class="py-16 bg-gray-50">
+<section class="py-16 bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12">Featured Products</h2>
+        <h2 class="text-3xl font-bold text-center mb-12 text-white font-display">Featured Products</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($featuredProducts as $product)
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300 overflow-hidden">
-                <div class="aspect-w-1 aspect-h-1 bg-gray-200 relative">
+            <div class="tech-card overflow-hidden hover:shadow-glow transition-all duration-300 transform hover:scale-105 group">
+                <div class="aspect-w-1 aspect-h-1 relative">
                     @if($product->isOnSale())
-                    <span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">
+                    <span class="absolute top-3 left-3 bg-gradient-to-r from-secondary-500 to-secondary-600 text-white px-3 py-1 text-xs rounded-full z-10 font-mono font-bold">
                         -{{ $product->getDiscountPercentage() }}%
                     </span>
                     @endif
-                    <div class="flex items-center justify-center h-48 bg-gray-100 text-4xl">
+                    <div class="flex items-center justify-center h-48 bg-gradient-to-br from-gray-800 to-gray-900 text-4xl group-hover:from-gray-700 group-hover:to-gray-800 transition-all duration-300">
                         @if(str_contains(strtolower($product->name), 'iphone'))
                         📱
                         @elseif(str_contains(strtolower($product->name), 'macbook'))
@@ -75,18 +87,18 @@
                     </div>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
-                    <p class="text-gray-600 text-sm mb-2">{{ Str::limit($product->short_description, 60) }}</p>
+                    <h3 class="font-semibold text-white mb-2 font-display group-hover:text-primary-400 transition-colors duration-300">{{ $product->name }}</h3>
+                    <p class="text-gray-400 text-sm mb-3 font-mono">{{ Str::limit($product->short_description, 60) }}</p>
                     <div class="flex items-center justify-between">
                         <div>
                             @if($product->isOnSale())
-                            <span class="text-lg font-bold text-red-600">${{ number_format($product->sale_price, 2) }}</span>
-                            <span class="text-sm text-gray-500 line-through ml-1">${{ number_format($product->price, 2) }}</span>
+                            <span class="text-lg font-bold text-secondary-400 font-mono">${{ number_format($product->sale_price, 2) }}</span>
+                            <span class="text-sm text-gray-500 line-through ml-1 font-mono">${{ number_format($product->price, 2) }}</span>
                             @else
-                            <span class="text-lg font-bold text-gray-900">${{ number_format($product->price, 2) }}</span>
+                            <span class="text-lg font-bold text-white font-mono">${{ number_format($product->price, 2) }}</span>
                             @endif
                         </div>
-                        <a href="{{ route('product', $product->slug) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        <a href="{{ route('product', $product->slug) }}" class="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors duration-300 font-display">
                             View Details
                         </a>
                     </div>
@@ -98,17 +110,17 @@
 </section>
 
 <!-- New Products -->
-<section class="py-16">
+<section class="py-16 bg-gradient-to-b from-black to-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12">New Arrivals</h2>
+        <h2 class="text-3xl font-bold text-center mb-12 text-white font-display">New Arrivals</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($newProducts as $product)
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300 overflow-hidden">
-                <div class="aspect-w-1 aspect-h-1 bg-gray-200 relative">
-                    <span class="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 text-xs rounded">
+            <div class="tech-card overflow-hidden hover:shadow-glow transition-all duration-300 transform hover:scale-105 group">
+                <div class="aspect-w-1 aspect-h-1 relative">
+                    <span class="absolute top-3 left-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white px-3 py-1 text-xs rounded-full z-10 font-mono font-bold">
                         New
                     </span>
-                    <div class="flex items-center justify-center h-48 bg-gray-100 text-4xl">
+                    <div class="flex items-center justify-center h-48 bg-gradient-to-br from-gray-800 to-gray-900 text-4xl group-hover:from-gray-700 group-hover:to-gray-800 transition-all duration-300">
                         @if(str_contains(strtolower($product->name), 'iphone'))
                         📱
                         @elseif(str_contains(strtolower($product->name), 'macbook'))
@@ -121,18 +133,18 @@
                     </div>
                 </div>
                 <div class="p-4">
-                    <h3 class="font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
-                    <p class="text-gray-600 text-sm mb-2">{{ Str::limit($product->short_description, 60) }}</p>
+                    <h3 class="font-semibold text-white mb-2 font-display group-hover:text-primary-400 transition-colors duration-300">{{ $product->name }}</h3>
+                    <p class="text-gray-400 text-sm mb-3 font-mono">{{ Str::limit($product->short_description, 60) }}</p>
                     <div class="flex items-center justify-between">
                         <div>
                             @if($product->isOnSale())
-                            <span class="text-lg font-bold text-red-600">${{ number_format($product->sale_price, 2) }}</span>
-                            <span class="text-sm text-gray-500 line-through ml-1">${{ number_format($product->price, 2) }}</span>
+                            <span class="text-lg font-bold text-secondary-400 font-mono">${{ number_format($product->sale_price, 2) }}</span>
+                            <span class="text-sm text-gray-500 line-through ml-1 font-mono">${{ number_format($product->price, 2) }}</span>
                             @else
-                            <span class="text-lg font-bold text-gray-900">${{ number_format($product->price, 2) }}</span>
+                            <span class="text-lg font-bold text-white font-mono">${{ number_format($product->price, 2) }}</span>
                             @endif
                         </div>
-                        <a href="{{ route('product', $product->slug) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        <a href="{{ route('product', $product->slug) }}" class="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors duration-300 font-display">
                             View Details
                         </a>
                     </div>
@@ -144,29 +156,29 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-16 bg-blue-50">
+<section class="py-16 bg-gradient-to-br from-gray-900 via-black to-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    🚚
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow group-hover:shadow-glow-lg transition-all duration-300 transform group-hover:scale-110">
+                    <span class="text-2xl">🚚</span>
                 </div>
-                <h3 class="text-lg font-semibold mb-2">Free Shipping</h3>
-                <p class="text-gray-600">Free shipping on orders over $100</p>
+                <h3 class="text-lg font-semibold mb-2 text-white font-display">Free Shipping</h3>
+                <p class="text-gray-400 font-mono">Free shipping on orders over $100</p>
             </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    🔒
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-gradient-to-r from-secondary-500 to-secondary-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow group-hover:shadow-glow-lg transition-all duration-300 transform group-hover:scale-110">
+                    <span class="text-2xl">🔒</span>
                 </div>
-                <h3 class="text-lg font-semibold mb-2">Secure Payment</h3>
-                <p class="text-gray-600">Your payment information is safe with us</p>
+                <h3 class="text-lg font-semibold mb-2 text-white font-display">Secure Payment</h3>
+                <p class="text-gray-400 font-mono">Your payment information is safe with us</p>
             </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    ↩️
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-gradient-to-r from-accent-500 to-primary-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow group-hover:shadow-glow-lg transition-all duration-300 transform group-hover:scale-110">
+                    <span class="text-2xl">↩️</span>
                 </div>
-                <h3 class="text-lg font-semibold mb-2">Easy Returns</h3>
-                <p class="text-gray-600">30-day return policy on all products</p>
+                <h3 class="text-lg font-semibold mb-2 text-white font-display">Easy Returns</h3>
+                <p class="text-gray-400 font-mono">30-day return policy on all products</p>
             </div>
         </div>
     </div>
