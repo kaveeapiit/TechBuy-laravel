@@ -61,6 +61,43 @@ class Product extends Model
         });
     }
 
+    /**
+     * Get the specifications attribute and ensure it's always an array
+     */
+    public function getSpecificationsAttribute($value)
+    {
+        if (is_null($value)) {
+            return [];
+        }
+
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            return (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) ? $decoded : [];
+        }
+
+        return is_array($value) ? $value : [];
+    }
+
+    /**
+     * Set the specifications attribute and ensure it's properly encoded
+     */
+    public function setSpecificationsAttribute($value)
+    {
+        if (is_array($value)) {
+            $this->attributes['specifications'] = json_encode($value);
+        } elseif (is_string($value)) {
+            // Validate it's proper JSON
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                $this->attributes['specifications'] = json_encode($decoded);
+            } else {
+                $this->attributes['specifications'] = null;
+            }
+        } else {
+            $this->attributes['specifications'] = null;
+        }
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

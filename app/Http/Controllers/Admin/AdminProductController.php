@@ -75,6 +75,17 @@ class AdminProductController extends Controller
             // Generate slug
             $validated['slug'] = Str::slug($validated['name']);
 
+            // Handle specifications - convert JSON string to array if needed
+            if (isset($validated['specifications']) && is_string($validated['specifications'])) {
+                $decodedSpecs = json_decode($validated['specifications'], true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decodedSpecs)) {
+                    $validated['specifications'] = $decodedSpecs;
+                } else {
+                    // If it's not valid JSON, treat as null
+                    $validated['specifications'] = null;
+                }
+            }
+
             // Handle multiple image uploads
             $imagePaths = [];
             if ($request->hasFile('images')) {
@@ -137,6 +148,17 @@ class AdminProductController extends Controller
                 $validated['slug'] = Str::slug($validated['name']);
             }
 
+            // Handle specifications - convert JSON string to array if needed
+            if (isset($validated['specifications']) && is_string($validated['specifications'])) {
+                $decodedSpecs = json_decode($validated['specifications'], true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decodedSpecs)) {
+                    $validated['specifications'] = $decodedSpecs;
+                } else {
+                    // If it's not valid JSON, treat as null
+                    $validated['specifications'] = null;
+                }
+            }
+
             // Handle image uploads
             if ($request->hasFile('images')) {
                 // Delete old images
@@ -172,7 +194,7 @@ class AdminProductController extends Controller
     {
         try {
             // Delete product images
-            $images = $product->images ?? [];
+            $images = json_decode($product->images, true) ?? [];
             foreach ($images as $image) {
                 if (Storage::disk('public')->exists($image)) {
                     Storage::disk('public')->delete($image);

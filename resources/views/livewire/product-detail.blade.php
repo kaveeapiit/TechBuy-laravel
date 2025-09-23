@@ -126,7 +126,7 @@
             @endif
 
             <!-- Specifications -->
-            @if($product->specifications)
+            @if($product->specifications && count($product->specifications) > 0)
             <div class="mb-6">
                 <h3 class="text-lg font-semibold mb-4 text-white font-orbitron">Specifications</h3>
                 <div class="tech-card p-4">
