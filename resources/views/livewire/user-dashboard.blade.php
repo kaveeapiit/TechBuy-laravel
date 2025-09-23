@@ -189,13 +189,22 @@
                             <span class="ml-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-300">My Cart ({{ $cartItemCount }})</span>
                         </a>
 
-                        <a href="{{ route('profile.show') }}" class="flex items-center p-3 rounded-xl hover:bg-white/5 transition-all duration-300 glow-on-hover group">
+                        <a href="{{ route('user.profile') }}" class="flex items-center p-3 rounded-xl hover:bg-white/5 transition-all duration-300 glow-on-hover group">
                             <div class="w-10 h-10 bg-gradient-to-br from-tech-500 to-tech-600 rounded-xl flex items-center justify-center shadow-glow group-hover:shadow-glow-lg transition-all duration-300">
                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                             </div>
-                            <span class="ml-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-300">Account Settings</span>
+                            <span class="ml-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-300">My Profile</span>
+                        </a>
+
+                        <a href="{{ route('user.orders') }}" class="flex items-center p-3 rounded-xl hover:bg-white/5 transition-all duration-300 glow-on-hover group">
+                            <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-glow group-hover:shadow-glow-lg transition-all duration-300">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <span class="ml-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-300">Order History</span>
                         </a> <!-- Featured Products -->
                         <div class="bg-white rounded-xl shadow-sm border border-secondary-100 p-6">
                             <h3 class="text-lg font-semibold text-secondary-900 mb-4">Featured Products</h3>
