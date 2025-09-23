@@ -133,7 +133,7 @@
                                 class="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white text-xs px-3 py-2 rounded font-semibold transition-all duration-300 text-center">
                                 Edit
                             </a>
-                            <button onclick="confirmDelete('{{ $product->slug }}')"
+                            <button onclick="confirmDelete({{ $product->id }})"
                                 class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded font-semibold transition-all duration-300">
                                 Delete
                             </button>
@@ -202,9 +202,9 @@
     </div>
 
     <script>
-        function confirmDelete(productSlug) {
+        function confirmDelete(productId) {
             const form = document.getElementById('deleteForm');
-            form.action = `/admin/products/${productSlug}`;
+            form.action = `/admin/products/${productId}`;
             document.getElementById('deleteModal').classList.remove('hidden');
         }
 
