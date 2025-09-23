@@ -32,7 +32,7 @@
                 </div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data" class="space-y-6">
+                <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data" class="space-y-6 admin-form">
                     @csrf
                     @method('PUT')
 
@@ -84,9 +84,9 @@
                                     name="category_id"
                                     required
                                     class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300">
-                                    <option value="">Select a category</option>
+                                    <option value="" class="bg-gray-800 text-white">Select a category</option>
                                     @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}" class="bg-gray-800 text-white" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                     @endforeach
@@ -111,7 +111,7 @@
                         <div class="space-y-6">
                             <!-- Current Images -->
                             @php
-                            $currentImages = json_decode($product->images, true) ?? [];
+                            $currentImages = $product->images ?? [];
                             @endphp
 
                             @if(count($currentImages) > 0)

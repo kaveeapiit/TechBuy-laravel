@@ -26,7 +26,7 @@
                 </div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.users.update', $user) }}" class="space-y-6">
+                <form method="POST" action="{{ route('admin.users.update', $user) }}" class="space-y-6 admin-form">
                     @csrf
                     @method('PUT')
 

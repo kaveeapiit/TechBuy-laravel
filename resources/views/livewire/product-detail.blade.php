@@ -24,7 +24,7 @@
             </div>
 
             <!-- Thumbnail Images -->
-            @if($product->images && count($product->images) > 1)
+            @if($product->images && is_array($product->images) && count($product->images) > 1)
             <div class="grid grid-cols-4 gap-2">
                 @foreach($product->images as $index => $image)
                 <button wire:click="selectImage({{ $index }})"

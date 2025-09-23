@@ -33,7 +33,7 @@
                     <h3 class="text-xl font-semibold text-white mb-4 font-display">Product Images</h3>
 
                     @php
-                    $images = json_decode($product->images, true) ?? [];
+                    $images = $product->images ?? [];
                     @endphp
 
                     @if(count($images) > 0)

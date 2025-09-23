@@ -17,6 +17,27 @@
 
     <!-- Styles -->
     @livewireStyles
+
+    <!-- Additional admin form styles -->
+    <style>
+        /* Ensure form inputs have proper contrast */
+        .admin-form input,
+        .admin-form select,
+        .admin-form textarea {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: white !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .admin-form select option {
+            background: #1f2937 !important;
+            color: white !important;
+        }
+
+        .admin-form label {
+            color: #d1d5db !important;
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased bg-gradient-to-br from-gray-900 via-black to-gray-800 min-h-screen">

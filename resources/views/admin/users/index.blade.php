@@ -114,10 +114,6 @@
                                     <div class="text-sm text-gray-400">{{ $user->created_at->diffForHumans() }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <a href="{{ route('admin.users.show', $user) }}"
-                                        class="text-blue-400 hover:text-blue-300 transition-colors duration-200">
-                                        View
-                                    </a>
                                     <a href="{{ route('admin.users.edit', $user) }}"
                                         class="text-yellow-400 hover:text-yellow-300 transition-colors duration-200">
                                         Edit

@@ -82,7 +82,7 @@ class AdminProductController extends Controller
                     $imagePaths[] = $image->store('products', 'public');
                 }
             }
-            $validated['images'] = json_encode($imagePaths);
+            $validated['images'] = $imagePaths; // Store as array, let the model cast handle it
 
             // Set default active status
             $validated['is_active'] = $request->boolean('is_active', true);
@@ -140,7 +140,7 @@ class AdminProductController extends Controller
             // Handle image uploads
             if ($request->hasFile('images')) {
                 // Delete old images
-                $oldImages = json_decode($product->images, true) ?? [];
+                $oldImages = $product->images ?? [];
                 foreach ($oldImages as $oldImage) {
                     if (Storage::disk('public')->exists($oldImage)) {
                         Storage::disk('public')->delete($oldImage);
@@ -152,7 +152,7 @@ class AdminProductController extends Controller
                 foreach ($request->file('images') as $image) {
                     $imagePaths[] = $image->store('products', 'public');
                 }
-                $validated['images'] = json_encode($imagePaths);
+                $validated['images'] = $imagePaths; // Store as array, let the model cast handle it
             }
 
             $validated['is_active'] = $request->boolean('is_active', true);
