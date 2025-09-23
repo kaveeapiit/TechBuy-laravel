@@ -172,7 +172,7 @@ class AdminProductController extends Controller
     {
         try {
             // Delete product images
-            $images = json_decode($product->images, true) ?? [];
+            $images = $product->images ?? [];
             foreach ($images as $image) {
                 if (Storage::disk('public')->exists($image)) {
                     Storage::disk('public')->delete($image);

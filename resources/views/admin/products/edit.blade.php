@@ -176,7 +176,7 @@
                             name="specifications"
                             rows="4"
                             class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                            placeholder="Enter product specifications (optional)">{{ old('specifications', $product->specifications) }}</textarea>
+                            placeholder="Enter product specifications (optional)">{{ old('specifications', is_array($product->specifications) ? json_encode($product->specifications, JSON_PRETTY_PRINT) : $product->specifications) }}</textarea>
                     </div>
 
                     <!-- Features -->

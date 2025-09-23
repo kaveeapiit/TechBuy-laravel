@@ -174,7 +174,7 @@
                 @if($product->specifications)
                 <div class="tech-card p-6">
                     <h3 class="text-xl font-semibold text-white mb-4 font-display">Specifications</h3>
-                    <div class="text-gray-300 whitespace-pre-line">{{ $product->specifications }}</div>
+                    <div class="text-gray-300 whitespace-pre-line">{{ is_array($product->specifications) ? json_encode($product->specifications, JSON_PRETTY_PRINT) : $product->specifications }}</div>
                 </div>
                 @endif
 
