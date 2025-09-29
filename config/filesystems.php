@@ -42,7 +42,7 @@ return [
             'driver' => 'local',
             // In Azure, we use the root/storage directory directly
             'root' => env('AZURE_STORAGE_PATH', public_path('storage')),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -52,7 +52,7 @@ return [
         'azure' => [
             'driver' => 'local',
             'root' => public_path('storage'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

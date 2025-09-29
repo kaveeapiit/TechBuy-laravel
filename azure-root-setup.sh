@@ -29,16 +29,16 @@ if [ -d "public" ]; then
     # Handle storage for Azure (copy instead of symlink)
     if [ -d "storage/app/public" ]; then
         echo "Setting up storage for Azure..."
-        
+
         # Create storage directory in root if it doesn't exist
         mkdir -p storage 2>/dev/null
-        
+
         # Copy public storage contents instead of symlink
         cp -r storage/app/public/* storage/ 2>/dev/null
-        
+
         # Ensure proper permissions
         chmod -R 755 storage
-        
+
         echo "✅ Storage files copied (Azure-compatible approach)"
     else
         echo "⚠️  No public storage directory found"
