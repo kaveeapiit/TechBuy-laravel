@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read
 
     steps:
       - name: Checkout code
@@ -23,13 +23,26 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, bcmath, intl, pdo_pgsql, curl
+          extensions: mbstring, bcmath, intl, pdo_pgsql, curl, mongodb
+          tools: composer
 
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --prefer-dist --no-progress
 
       - name: Set Laravel permissions
         run: chmod -R 775 storage bootstrap/cache
+
+      - name: Generate APP_KEY if missing
+        run: |
+          if ! grep -q "APP_KEY=" .env; then
+            php artisan key:generate
+          fi
+
+      - name: Run Laravel optimizations
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -38,24 +51,29 @@ jobs:
 
       - name: Install NPM packages and build assets
         run: |
-          npm install
+          npm ci
           npm run build
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: laravel-app
-          path: .
+          path: |
+            .
+            !node_modules/
+            !tests/
+            !.git/
+            !.github/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write # Required for requesting the JWT
-      contents: read  # Required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: laravel-app
@@ -63,18 +81,17 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F6C873D5C2034A84BC433F7568F73AFA }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_175E4E055C434C79B8DDC1982C8FA4A9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D5DF7C74F9484387B0ED5831DAE33362 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      - name: Wait before deploy (avoid SCM restart conflicts)
-        run: sleep 20
+      - name: Wait before deploy (avoid SCM conflicts)
+        run: sleep 15
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'techbuy-webapp'
-          slot-name: 'Production'
+          slot-name: 'production'
           package: .
-          clean: true
