@@ -5,26 +5,87 @@ echo "Setting up Laravel for root deployment..."
 
 cd /home/site/wwwroot
 
-# Copy public assets to root if they don't exist
-if [ ! -f "/home/site/wwwroot/favicon.ico" ]; then
-    echo "Copying public assets to root..."
-    cp public/favicon.ico . 2>/dev/null || true
-    cp public/robots.txt . 2>/dev/null || true
-    cp -r public/build . 2>/dev/null || true
+# Move ALL public assets to root (comprehensive approach)
+echo "Moving all public assets to root directory..."
+
+# Copy all files from public/ to root, excluding index.php (we'll handle it separately)
+if [ -d "public" ]; then
+    echo "Copying public assets..."
+    
+    # Copy individual files and directories from public/
+    find public/ -maxdepth 1 -type f ! -name "index.php" -exec cp {} . \;
+    
+    # Copy directories from public/
+    find public/ -maxdepth 1 -type d ! -name "public" -exec cp -r {} . \;
+    
+    # Specifically ensure build directory is copied
+    if [ -d "public/build" ]; then
+        cp -r public/build . 2>/dev/null || echo "Build directory copy failed"
+        echo "✅ Build assets copied"
+    else
+        echo "⚠️  No build directory found in public/"
+    fi
+    
+    # Create storage link in root
+    if [ -d "storage/app/public" ]; then
+        ln -sf ../storage/app/public storage 2>/dev/null || echo "Storage link failed"
+        echo "✅ Storage link created"
+    fi
+    
+    echo "✅ All public assets moved to root"
+else
+    echo "❌ Public directory not found"
 fi
 
-# Ensure .htaccess is correct for root deployment
+# Ensure Livewire assets are accessible
+if [ -d "vendor/livewire" ]; then
+    # Create livewire directory in root and copy assets
+    mkdir -p livewire
+    if [ -f "vendor/livewire/livewire/dist/livewire.min.js" ]; then
+        cp vendor/livewire/livewire/dist/livewire.min.js livewire/ 2>/dev/null || echo "Livewire JS copy failed"
+        echo "✅ Livewire assets copied"
+    fi
+fi
+
+# Create comprehensive .htaccess for root deployment
 cat > .htaccess << 'EOF'
 <IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
     RewriteEngine On
 
-    # Handle Laravel routes from root
-    RewriteCond %{REQUEST_FILENAME} !-f
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Serve static assets directly (CSS, JS, images, etc.)
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^(build/.*|livewire/.*|storage/.*|.*\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))$ - [L]
+
+    # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [L,QSA]
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 </IfModule>
 
 DirectoryIndex index.php
+
+# Force HTTPS
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+    
+    # Cache static assets
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+</IfModule>
 EOF
 
 # Ensure index.php is correct for root deployment
@@ -120,5 +181,45 @@ php artisan storage:link 2>/dev/null || echo "Storage link failed"
 # Test Laravel installation
 echo "Testing Laravel..."
 php artisan about 2>/dev/null || echo "Laravel test failed"
+
+# Verify asset deployment
+echo ""
+echo "Verifying asset deployment..."
+echo "================================"
+
+# Check for key files
+files_to_check=("index.php" ".htaccess" ".env")
+for file in "${files_to_check[@]}"; do
+    if [ -f "$file" ]; then
+        echo "✅ $file exists"
+    else
+        echo "❌ $file missing"
+    fi
+done
+
+# Check for directories
+dirs_to_check=("build" "livewire" "storage")
+for dir in "${dirs_to_check[@]}"; do
+    if [ -d "$dir" ]; then
+        echo "✅ $dir/ directory exists"
+        file_count=$(find "$dir" -type f | wc -l)
+        echo "   └── Contains $file_count files"
+    else
+        echo "❌ $dir/ directory missing"
+    fi
+done
+
+# Check for specific asset files that were causing 404s
+if [ -f "build/assets/app-B0xxWJs0.css" ] || [ -n "$(find build -name '*.css' 2>/dev/null)" ]; then
+    echo "✅ CSS assets found in build/"
+else
+    echo "⚠️  CSS assets not found in build/"
+fi
+
+if [ -f "livewire/livewire.min.js" ]; then
+    echo "✅ Livewire JS found"
+else
+    echo "⚠️  Livewire JS not found"
+fi
 
 echo "Laravel root deployment setup completed!"
