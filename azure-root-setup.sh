@@ -17,7 +17,7 @@ fi
 cat > .htaccess << 'EOF'
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    
+
     # Handle Laravel routes from root
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
