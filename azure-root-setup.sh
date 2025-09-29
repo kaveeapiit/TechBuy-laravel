@@ -11,13 +11,13 @@ echo "Moving all public assets to root directory..."
 # Copy all files from public/ to root, excluding index.php (we'll handle it separately)
 if [ -d "public" ]; then
     echo "Copying public assets..."
-    
+
     # Copy individual files and directories from public/
     find public/ -maxdepth 1 -type f ! -name "index.php" -exec cp {} . \;
-    
+
     # Copy directories from public/
     find public/ -maxdepth 1 -type d ! -name "public" -exec cp -r {} . \;
-    
+
     # Specifically ensure build directory is copied
     if [ -d "public/build" ]; then
         cp -r public/build . 2>/dev/null || echo "Build directory copy failed"
@@ -25,13 +25,13 @@ if [ -d "public" ]; then
     else
         echo "⚠️  No build directory found in public/"
     fi
-    
+
     # Create storage link in root
     if [ -d "storage/app/public" ]; then
         ln -sf ../storage/app/public storage 2>/dev/null || echo "Storage link failed"
         echo "✅ Storage link created"
     fi
-    
+
     echo "✅ All public assets moved to root"
 else
     echo "❌ Public directory not found"
@@ -80,7 +80,7 @@ DirectoryIndex index.php
 # Force HTTPS
 <IfModule mod_headers.c>
     Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
-    
+
     # Cache static assets
     <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
         Header set Cache-Control "max-age=31536000, public"
