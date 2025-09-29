@@ -66,9 +66,9 @@ If you prefer to keep the .env.production approach, you can:
 
 ## Current Status
 
-- ✅ Application code and configuration files are deployed
-- ⏳ Need to configure Azure Application Settings for sensitive data
-- ✅ HTTPS and routing fixes are in place
+-   ✅ Application code and configuration files are deployed
+-   ⏳ Need to configure Azure Application Settings for sensitive data
+-   ✅ HTTPS and routing fixes are in place
 
 ## Next Steps
 
