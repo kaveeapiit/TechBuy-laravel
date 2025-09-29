@@ -69,4 +69,16 @@ if (is_dir('bootstrap/cache')) {
     }
 }
 
+// Run Laravel cache commands
+echo "Running Laravel cache commands...\n";
+exec('php artisan config:clear 2>&1', $output);
+exec('php artisan route:clear 2>&1', $output);
+exec('php artisan view:clear 2>&1', $output);
+exec('php artisan cache:clear 2>&1', $output);
+
+// Recache for production
+echo "Caching for production...\n";
+exec('php artisan config:cache 2>&1', $output);
+exec('php artisan route:cache 2>&1', $output);
+
 echo "Laravel Azure setup completed!\n";
