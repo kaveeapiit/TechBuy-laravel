@@ -274,6 +274,9 @@ Get these from your Cosmos DB:
 
 ### Step 16: Generate Application Key
 
+⚠️ **If you encounter a "Please provide a valid cache path" error, use the alternative method below.**
+
+**Method 1: Standard Approach**
 1. In App Service, go to "Console" (under Development Tools)
 2. Navigate to your app directory:
     ```bash
@@ -287,6 +290,42 @@ Get these from your Cosmos DB:
 5. Go back to "Configuration" → "Application settings"
 6. Update `APP_KEY` with the generated key (including `base64:` prefix)
 7. Click "Save"
+
+**Method 2: Alternative Approach (Use if Method 1 fails)**
+If you get a cache path error, use our helper script:
+
+1. In the Azure Console, navigate to your app directory:
+    ```bash
+    cd /home/site/wwwroot
+    ```
+2. Run the Laravel setup script:
+    ```bash
+    php azure-laravel-setup.php
+    ```
+3. This script will:
+   - Create necessary cache directories
+   - Generate an application key automatically
+   - Set up proper permissions
+4. Check the generated key:
+    ```bash
+    grep APP_KEY .env
+    ```
+5. Copy the key (including `base64:` prefix)
+6. Go to "Configuration" → "Application settings"
+7. Update `APP_KEY` with the generated key
+8. Click "Save"
+
+**Method 3: Manual Key Generation (Last Resort)**
+If both methods above fail:
+
+1. Generate a key locally on your computer:
+    ```bash
+    php -r "echo 'base64:' . base64_encode(random_bytes(32)) . PHP_EOL;"
+    ```
+2. Copy the generated key
+3. Go to Azure → "Configuration" → "Application settings"
+4. Update `APP_KEY` with the generated key
+5. Click "Save"
 
 ### Step 17: Run Database Migrations
 
@@ -329,9 +368,19 @@ Get these from your Cosmos DB:
 
 1. In App Service → Configuration → General settings
 2. Set **Startup Command** to:
-    ```bash
-    cp /home/site/wwwroot/.env.production /home/site/wwwroot/.env && php artisan config:cache && php artisan route:cache && php artisan view:cache
-    ```
+   ```bash
+   bash /home/site/wwwroot/azure-startup.sh
+   ```
+   
+   **Alternative (if bash doesn't work):**
+   ```bash
+   cd /home/site/wwwroot && php azure-laravel-setup.php && php artisan config:cache && php artisan route:cache && php artisan view:cache
+   ```
+   
+   **Fallback (minimal setup):**
+   ```bash
+   cd /home/site/wwwroot && mkdir -p storage/framework/cache/data && mkdir -p storage/framework/sessions && mkdir -p storage/framework/views && mkdir -p bootstrap/cache && chmod -R 775 storage && cp .env.production .env
+   ```
 3. Click "Save"
 
 ## Final Configuration
@@ -439,7 +488,46 @@ If something doesn't work:
 
 ## Troubleshooting Common Issues
 
-### Issue 1: 500 Internal Server Error
+### Issue 1: "Please provide a valid cache path" Error
+
+**Error Message:**
+```
+InvalidArgumentException: Please provide a valid cache path.
+```
+
+**Solution:**
+This error occurs when Laravel can't access or create cache directories. Follow these steps:
+
+1. **Use the Azure setup script** (Recommended):
+   ```bash
+   cd /home/site/wwwroot
+   php azure-laravel-setup.php
+   ```
+
+2. **Manual directory creation**:
+   ```bash
+   cd /home/site/wwwroot
+   mkdir -p storage/framework/cache/data
+   mkdir -p storage/framework/sessions
+   mkdir -p storage/framework/views
+   mkdir -p bootstrap/cache
+   chmod -R 775 storage
+   chmod -R 775 bootstrap/cache
+   ```
+
+3. **Clear caches**:
+   ```bash
+   php artisan config:clear
+   php artisan cache:clear
+   php artisan view:clear
+   ```
+
+4. **Set environment variables in Azure** (not in console):
+   - Go to Configuration → Application settings
+   - Manually add `APP_KEY` with a generated value
+   - Use: `php -r "echo 'base64:' . base64_encode(random_bytes(32)) . PHP_EOL;"`
+
+### Issue 2: 500 Internal Server Error
 
 **Solution:**
 
@@ -448,7 +536,7 @@ If something doesn't work:
 3. Ensure database migrations ran successfully
 4. Check file permissions
 
-### Issue 2: Database Connection Failed
+### Issue 3: Database Connection Failed
 
 **Solution:**
 
@@ -457,7 +545,7 @@ If something doesn't work:
 3. Verify connection strings are correct
 4. Test database connectivity from Console
 
-### Issue 3: Assets Not Loading
+### Issue 4: Assets Not Loading
 
 **Solution:**
 
@@ -465,7 +553,7 @@ If something doesn't work:
 2. Check if public folder has compiled assets
 3. Verify `APP_URL` is set correctly
 
-### Issue 4: Session/Cache Issues
+### Issue 5: Session/Cache Issues
 
 **Solution:**
 
