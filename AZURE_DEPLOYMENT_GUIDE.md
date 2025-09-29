@@ -277,6 +277,7 @@ Get these from your Cosmos DB:
 ⚠️ **If you encounter a "Please provide a valid cache path" error, use the alternative method below.**
 
 **Method 1: Standard Approach**
+
 1. In App Service, go to "Console" (under Development Tools)
 2. Navigate to your app directory:
     ```bash
@@ -303,9 +304,9 @@ If you get a cache path error, use our helper script:
     php azure-laravel-setup.php
     ```
 3. This script will:
-   - Create necessary cache directories
-   - Generate an application key automatically
-   - Set up proper permissions
+    - Create necessary cache directories
+    - Generate an application key automatically
+    - Set up proper permissions
 4. Check the generated key:
     ```bash
     grep APP_KEY .env
@@ -368,19 +369,23 @@ If both methods above fail:
 
 1. In App Service → Configuration → General settings
 2. Set **Startup Command** to:
-   ```bash
-   bash /home/site/wwwroot/azure-startup.sh
-   ```
-   
-   **Alternative (if bash doesn't work):**
-   ```bash
-   cd /home/site/wwwroot && php azure-laravel-setup.php && php artisan config:cache && php artisan route:cache && php artisan view:cache
-   ```
-   
-   **Fallback (minimal setup):**
-   ```bash
-   cd /home/site/wwwroot && mkdir -p storage/framework/cache/data && mkdir -p storage/framework/sessions && mkdir -p storage/framework/views && mkdir -p bootstrap/cache && chmod -R 775 storage && cp .env.production .env
-   ```
+
+    ```bash
+    bash /home/site/wwwroot/azure-startup.sh
+    ```
+
+    **Alternative (if bash doesn't work):**
+
+    ```bash
+    cd /home/site/wwwroot && php azure-laravel-setup.php && php artisan config:cache && php artisan route:cache && php artisan view:cache
+    ```
+
+    **Fallback (minimal setup):**
+
+    ```bash
+    cd /home/site/wwwroot && mkdir -p storage/framework/cache/data && mkdir -p storage/framework/sessions && mkdir -p storage/framework/views && mkdir -p bootstrap/cache && chmod -R 775 storage && cp .env.production .env
+    ```
+
 3. Click "Save"
 
 ## Final Configuration
@@ -491,6 +496,7 @@ If something doesn't work:
 ### Issue 1: "Please provide a valid cache path" Error
 
 **Error Message:**
+
 ```
 InvalidArgumentException: Please provide a valid cache path.
 ```
@@ -499,33 +505,36 @@ InvalidArgumentException: Please provide a valid cache path.
 This error occurs when Laravel can't access or create cache directories. Follow these steps:
 
 1. **Use the Azure setup script** (Recommended):
-   ```bash
-   cd /home/site/wwwroot
-   php azure-laravel-setup.php
-   ```
+
+    ```bash
+    cd /home/site/wwwroot
+    php azure-laravel-setup.php
+    ```
 
 2. **Manual directory creation**:
-   ```bash
-   cd /home/site/wwwroot
-   mkdir -p storage/framework/cache/data
-   mkdir -p storage/framework/sessions
-   mkdir -p storage/framework/views
-   mkdir -p bootstrap/cache
-   chmod -R 775 storage
-   chmod -R 775 bootstrap/cache
-   ```
+
+    ```bash
+    cd /home/site/wwwroot
+    mkdir -p storage/framework/cache/data
+    mkdir -p storage/framework/sessions
+    mkdir -p storage/framework/views
+    mkdir -p bootstrap/cache
+    chmod -R 775 storage
+    chmod -R 775 bootstrap/cache
+    ```
 
 3. **Clear caches**:
-   ```bash
-   php artisan config:clear
-   php artisan cache:clear
-   php artisan view:clear
-   ```
+
+    ```bash
+    php artisan config:clear
+    php artisan cache:clear
+    php artisan view:clear
+    ```
 
 4. **Set environment variables in Azure** (not in console):
-   - Go to Configuration → Application settings
-   - Manually add `APP_KEY` with a generated value
-   - Use: `php -r "echo 'base64:' . base64_encode(random_bytes(32)) . PHP_EOL;"`
+    - Go to Configuration → Application settings
+    - Manually add `APP_KEY` with a generated value
+    - Use: `php -r "echo 'base64:' . base64_encode(random_bytes(32)) . PHP_EOL;"`
 
 ### Issue 2: 500 Internal Server Error
 
