@@ -26,10 +26,22 @@ if [ -d "public" ]; then
         echo "⚠️  No build directory found in public/"
     fi
 
-    # Create storage link in root
+    # Handle storage for Azure (copy instead of symlink)
     if [ -d "storage/app/public" ]; then
-        ln -sf ../storage/app/public storage 2>/dev/null || echo "Storage link failed"
-        echo "✅ Storage link created"
+        echo "Setting up storage for Azure..."
+        
+        # Create storage directory in root if it doesn't exist
+        mkdir -p storage 2>/dev/null
+        
+        # Copy public storage contents instead of symlink
+        cp -r storage/app/public/* storage/ 2>/dev/null
+        
+        # Ensure proper permissions
+        chmod -R 755 storage
+        
+        echo "✅ Storage files copied (Azure-compatible approach)"
+    else
+        echo "⚠️  No public storage directory found"
     fi
 
     echo "✅ All public assets moved to root"
@@ -116,12 +128,15 @@ EOF
 chmod 755 index.php
 chmod 644 .htaccess
 
-# Setup Laravel directories and environment
-mkdir -p storage/framework/cache/data
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views
-mkdir -p storage/logs
-mkdir -p bootstrap/cache
+# Setup Laravel directories and storage
+echo "Setting up Laravel storage..."
+bash azure-storage-setup.sh
+
+# Set storage path for Azure
+if [ ! -z "$WEBSITE_SITE_NAME" ]; then
+    echo "AZURE_STORAGE_PATH=/home/site/wwwroot/storage" >> .env
+    echo "✅ Added Azure storage path to .env"
+fi
 
 chmod -R 775 storage
 chmod -R 775 bootstrap/cache
