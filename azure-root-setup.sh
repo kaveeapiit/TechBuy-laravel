@@ -222,4 +222,17 @@ else
     echo "⚠️  Livewire JS not found"
 fi
 
+# Run additional route verification
+echo ""
+echo "Verifying Laravel routes..."
+echo "================================"
+
+# List all routes
+echo "Available routes:"
+php artisan route:list --no-ansi 2>/dev/null || echo "Route listing failed"
+
+# Clear route cache again to ensure fresh state
+php artisan route:clear 2>/dev/null || echo "Final route clear failed"
+php artisan optimize:clear 2>/dev/null || echo "Final optimization clear failed"
+
 echo "Laravel root deployment setup completed!"
