@@ -5,6 +5,7 @@
 .env.production
 .env.local
 .env.staging
+AZURE_CREDENTIALS.md
 .phpactor.json
 .phpunit.result.cache
 /.fleet
