@@ -17,47 +17,47 @@ echo "✅ Laravel project directory confirmed"
 # Check if .env.production exists
 if [ -f ".env.production" ]; then
     echo "✅ .env.production file exists"
-    
+
     # Check for required environment variables
     echo ""
     echo "📋 Environment Configuration Check:"
     echo "-----------------------------------"
-    
+
     # Check APP_KEY
     if grep -q "APP_KEY=base64:" .env.production; then
         echo "✅ APP_KEY is configured"
     else
         echo "❌ APP_KEY is missing or invalid"
     fi
-    
+
     # Check Database settings
     if grep -q "DB_HOST=techbuy-postgres-server" .env.production; then
         echo "✅ PostgreSQL configuration found"
     else
         echo "❌ PostgreSQL configuration missing"
     fi
-    
+
     # Check MongoDB settings
     if grep -q "MONGODB_CONNECTION=" .env.production; then
         echo "✅ MongoDB configuration found"
     else
         echo "❌ MongoDB configuration missing"
     fi
-    
+
     # Check APP_URL
     if grep -q "APP_URL=https://techbuy-webapp" .env.production; then
         echo "✅ Azure App URL configured"
     else
         echo "❌ Azure App URL missing"
     fi
-    
+
     # Check production settings
     if grep -q "APP_ENV=production" .env.production && grep -q "APP_DEBUG=false" .env.production; then
         echo "✅ Production settings configured"
     else
         echo "❌ Production settings need attention"
     fi
-    
+
 else
     echo "❌ .env.production file not found"
 fi
