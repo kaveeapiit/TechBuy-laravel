@@ -38,7 +38,7 @@ jobs:
 
       - name: Install NPM packages and build assets
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Upload artifact for deployment job
