@@ -13,16 +13,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->withPersonalTeam()->create();
-
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
+        // Use production-safe seeding
         $this->call([
-            CategorySeeder::class,
-            ProductSeeder::class,
+            ProductionSeeder::class,
         ]);
+        
+        // Fallback: try factory seeding if in development
+        if (app()->environment('local', 'development')) {
+            try {
+                User::factory()->withPersonalTeam()->create([
+                    'name' => 'Factory User',
+                    'email' => 'factory@example.com',
+                ]);
+            } catch (\Exception $e) {
+                // Factory failed, but ProductionSeeder should have worked
+                $this->command->info('Factory seeding skipped: ' . $e->getMessage());
+            }
+        }
     }
 }
