@@ -25,21 +25,21 @@ cd /home/site/wwwroot
 # Apply custom nginx configuration
 if [ -f "/home/site/wwwroot/nginx.conf" ]; then
     log "📁 Found custom nginx.conf, applying configuration..."
-    
+
     # Backup original nginx config
     if [ ! -f "/etc/nginx/sites-available/default.backup" ]; then
         cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
         log "✅ Backed up original nginx configuration"
     fi
-    
+
     # Apply our custom nginx configuration
     cp /home/site/wwwroot/nginx.conf /etc/nginx/sites-available/default
     log "✅ Applied custom nginx configuration"
-    
+
     # Test nginx configuration
     if nginx -t 2>/dev/null; then
         log "✅ Nginx configuration test passed"
-        
+
         # Reload nginx
         nginx -s reload 2>/dev/null || service nginx restart
         log "✅ Nginx reloaded successfully"
@@ -124,7 +124,7 @@ fi
 log "🌐 Nginx status:"
 if pgrep nginx > /dev/null; then
     log "✅ Nginx is running"
-    
+
     # Show listening ports
     PORTS=$(netstat -tlnp 2>/dev/null | grep nginx | awk '{print $4}' | grep -o ':[0-9]*' | sort -u)
     if [ ! -z "$PORTS" ]; then
