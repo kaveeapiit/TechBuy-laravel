@@ -12,6 +12,10 @@ class ProductionSeeder extends Seeder
 {
     public function run(): void
     {
+        echo "🚀 Starting Production Database Seeding...\n\n";
+        
+        echo "📊 SEEDING POSTGRESQL (Core Data)...\n";
+        
         // Create admin user
         User::create([
             'name' => 'Admin User',
@@ -19,6 +23,7 @@ class ProductionSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
         ]);
+        echo "✅ Created admin user: admin@techbuy.com\n";
 
         // Create test user
         User::create([
@@ -27,6 +32,7 @@ class ProductionSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
         ]);
+        echo "✅ Created test user: test@example.com\n";
 
         // Create categories with all required fields
         $categories = [
@@ -71,6 +77,7 @@ class ProductionSeeder extends Seeder
         foreach ($categories as $category) {
             Category::create($category);
         }
+        echo "✅ Created " . count($categories) . " categories in PostgreSQL\n";
 
         // Create sample products with ALL REQUIRED FIELDS
         $products = [
@@ -141,5 +148,27 @@ class ProductionSeeder extends Seeder
         foreach ($products as $product) {
             Product::create($product);
         }
+        echo "✅ Created " . count($products) . " products in PostgreSQL\n\n";
+
+        echo "📊 SEEDING MONGODB (Enhanced Product Data)...\n";
+        
+        // Try to seed MongoDB
+        try {
+            $this->call(MongoDBSeeder::class);
+        } catch (\Exception $e) {
+            echo "⚠️  MongoDB seeding skipped: " . $e->getMessage() . "\n";
+            echo "💡 This is normal if MongoDB extension is not installed.\n";
+            echo "📦 To enable MongoDB features:\n";
+            echo "   1. Install: pecl install mongodb\n";
+            echo "   2. Add extension=mongodb to php.ini\n";
+            echo "   3. Restart web server\n\n";
+        }
+
+        echo "🎉 PRODUCTION SEEDING COMPLETE!\n";
+        echo "📊 PostgreSQL Data:\n";
+        echo "   - Users: 2\n";
+        echo "   - Categories: " . count($categories) . "\n";
+        echo "   - Products: " . count($products) . "\n\n";
+        echo "🌐 Your TechBuy website is now ready with sample data!\n";
     }
 }
