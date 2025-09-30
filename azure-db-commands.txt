@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo "🗄️ Azure Database Setup Commands"
+echo "==============================="
+echo ""
+echo "Your database is connected but empty. Run these commands in Azure console:"
+echo ""
+
+echo "1. 📊 Check migration status:"
+echo "   php artisan migrate:status"
+echo ""
+
+echo "2. 🔄 Run migrations (create tables):"
+echo "   php artisan migrate --force"
+echo ""
+
+echo "3. 🌱 Seed the database (add sample data):"
+echo "   php artisan db:seed --force"
+echo ""
+
+echo "4. 🧪 Verify data was added:"
+echo "   php artisan tinker --execute=\"echo 'Users: ' . \\App\\Models\\User::count(); echo 'Products: ' . \\App\\Models\\Product::count();\""
+echo ""
+
+echo "5. 🔍 Check specific tables:"
+echo "   php artisan tinker --execute=\"echo 'Categories: ' . \\App\\Models\\Category::count();\""
+echo ""
+
+echo "6. 🎯 One-liner to fix everything:"
+echo "   php artisan migrate:fresh --seed --force"
+echo ""
+
+echo "⚠️  IMPORTANT:"
+echo "The --force flag is required in production environment"
+echo "This will drop all tables and recreate them with sample data"
+echo ""
+
+echo "💡 Quick fix command:"
+echo "php artisan migrate:fresh --seed --force && php artisan tinker --execute=\"echo 'Setup complete! Users: ' . \\App\\Models\\User::count() . ', Products: ' . \\App\\Models\\Product::count() . ', Categories: ' . \\App\\Models\\Category::count();\""
