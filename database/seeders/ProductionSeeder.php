@@ -13,9 +13,9 @@ class ProductionSeeder extends Seeder
     public function run(): void
     {
         echo "🚀 Starting Production Database Seeding...\n\n";
-        
+
         echo "📊 SEEDING POSTGRESQL (Core Data)...\n";
-        
+
         // Create admin user
         User::create([
             'name' => 'Admin User',
@@ -151,7 +151,7 @@ class ProductionSeeder extends Seeder
         echo "✅ Created " . count($products) . " products in PostgreSQL\n\n";
 
         echo "📊 SEEDING MONGODB (Enhanced Product Data)...\n";
-        
+
         // Try to seed MongoDB
         try {
             $this->call(MongoDBSeeder::class);

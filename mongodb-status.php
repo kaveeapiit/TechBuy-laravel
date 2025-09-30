@@ -2,7 +2,7 @@
 
 /**
  * MongoDB Status Checker for Azure
- * 
+ *
  * This script checks MongoDB availability and shows current database status
  * Run this in Azure console with: php mongodb-status.php
  */
@@ -51,27 +51,26 @@ try {
         $mongoProductExists = class_exists('App\\Models\\Mongo\\MongoProduct');
         $mongoCategoryExists = class_exists('App\\Models\\Mongo\\MongoCategory');
         $mongoAnalyticsExists = class_exists('App\\Models\\Mongo\\ProductAnalytic');
-        
+
         echo "   MongoProduct model: " . ($mongoProductExists ? "✅ Available" : "❌ Missing") . "\n";
         echo "   MongoCategory model: " . ($mongoCategoryExists ? "✅ Available" : "❌ Missing") . "\n";
         echo "   ProductAnalytic model: " . ($mongoAnalyticsExists ? "✅ Available" : "❌ Missing") . "\n";
-        
+
         // Try to count documents (if connection works)
         if ($mongoProductExists) {
             try {
                 require_once __DIR__ . '/vendor/autoload.php';
                 $app = require_once __DIR__ . '/bootstrap/app.php';
                 $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
-                
+
                 $productCount = \App\Models\Mongo\MongoProduct::count();
                 $categoryCount = \App\Models\Mongo\MongoCategory::count();
                 $analyticsCount = \App\Models\Mongo\ProductAnalytic::count();
-                
+
                 echo "\n   📊 Current MongoDB Data:\n";
                 echo "      Products: $productCount\n";
                 echo "      Categories: $categoryCount\n";
                 echo "      Analytics: $analyticsCount\n";
-                
             } catch (\Exception $e) {
                 echo "   ⚠️  Cannot connect to MongoDB: " . $e->getMessage() . "\n";
             }
@@ -90,16 +89,15 @@ try {
     require_once __DIR__ . '/vendor/autoload.php';
     $app = require_once __DIR__ . '/bootstrap/app.php';
     $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
-    
+
     $userCount = \App\Models\User::count();
     $categoryCount = \App\Models\Category::count();
     $productCount = \App\Models\Product::count();
-    
+
     echo "   ✅ PostgreSQL is working:\n";
     echo "      Users: $userCount\n";
     echo "      Categories: $categoryCount\n";
     echo "      Products: $productCount\n";
-    
 } catch (\Exception $e) {
     echo "   ❌ PostgreSQL connection error: " . $e->getMessage() . "\n";
 }
