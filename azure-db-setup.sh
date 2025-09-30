@@ -27,18 +27,29 @@ if [ -n "$WEBSITE_SITE_NAME" ]; then
     
     # Test database connections
     echo "🔍 Testing database connections..."
+    echo "Environment check:"
+    echo "DB_HOST: ${DB_HOST:-'Not set'}"
+    echo "DB_DATABASE: ${DB_DATABASE:-'Not set'}"
+    echo "MONGODB_HOST: ${MONGODB_HOST:-'Not set'}"
+    echo ""
+    
     php artisan tinker --execute="
         try {
+            echo 'Testing PostgreSQL connection...' . PHP_EOL;
             \$userCount = \App\Models\User::count();
             echo 'PostgreSQL Users: ' . \$userCount . PHP_EOL;
             
+            echo 'Testing Product models...' . PHP_EOL;
             \$productCount = \App\Models\Product::count();
             echo 'Products: ' . \$productCount . PHP_EOL;
             
+            echo 'Database connections successful!' . PHP_EOL;
+            
         } catch (Exception \$e) {
             echo 'Database Error: ' . \$e->getMessage() . PHP_EOL;
+            echo 'Check Azure environment variables for database connections' . PHP_EOL;
         }
-    " 2>/dev/null || echo "❌ Database test failed"
+    " 2>/dev/null || echo "❌ Database test failed - check environment variables"
     
     # Cache configurations for production
     echo "⚡ Optimizing for production..."
