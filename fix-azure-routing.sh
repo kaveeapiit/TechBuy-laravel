@@ -32,7 +32,7 @@ cd /home/site/wwwroot
 # Cache config for production
 php artisan config:cache 2>/dev/null || echo "Config cache skipped"
 
-# Cache routes for production  
+# Cache routes for production
 php artisan route:cache 2>/dev/null || echo "Route cache skipped"
 
 # Cache views for production
