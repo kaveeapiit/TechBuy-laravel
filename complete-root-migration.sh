@@ -12,7 +12,7 @@ if [ -f "public/index.php" ]; then
     cp public/favicon.ico . 2>/dev/null || true
     cp public/robots.txt . 2>/dev/null || true
     cp -r public/storage . 2>/dev/null || true
-    
+
     echo "   - Removing conflicting public/index.php..."
     rm -f public/index.php
     rm -f public/.htaccess
