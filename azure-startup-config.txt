@@ -1,0 +1,20 @@
+# ===== AZURE APP SERVICE STARTUP COMMAND =====
+#
+# To make the nginx configuration persistent across restarts,
+# set this as your startup command in Azure App Service:
+#
+# /home/site/wwwroot/init_container.sh
+#
+# This can be set via:
+# 1. Azure Portal: Configuration > General Settings > Startup Command
+# 2. Azure CLI: az webapp config set --startup-file "/home/site/wwwroot/init_container.sh"
+# 3. ARM Template: "linuxFxVersion": "PHP|8.2", "appCommandLine": "/home/site/wwwroot/init_container.sh"
+#
+# The init_container.sh script will:
+# - Apply nginx configuration automatically on every restart
+# - Configure Laravel for HTTPS
+# - Set proper permissions
+# - Clear caches
+# - Verify services are running
+#
+# After setting this startup command, restart your app service.
