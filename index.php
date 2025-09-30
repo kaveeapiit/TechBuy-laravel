@@ -66,4 +66,14 @@ require __DIR__ . '/vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__ . '/bootstrap/app.php';
 
-$app->handleRequest(Request::capture());
+// Handle the request with better Azure routing support
+$request = Request::capture();
+
+// Debug logging for Azure (can be removed in production)
+if ($isAzure && env('APP_DEBUG')) {
+    error_log("Azure Route Debug - URI: " . $request->getRequestUri() . " Method: " . $request->getMethod());
+}
+
+$response = $app->handle($request);
+$response->send();
+$app->terminate($request, $response);

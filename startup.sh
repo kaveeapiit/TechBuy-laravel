@@ -1,28 +1,28 @@
 #!/bin/bash
 
-echo "🚀 TechBuy Azure Startup"
-echo "======================="
+echo "🚀 Azure Startup Script"
+echo "====================="
 
-# Set proper permissions
+# Set permissions
 chmod -R 755 /home/site/wwwroot
+chown -R root:root /home/site/wwwroot
+
+# Run Laravel optimizations
 cd /home/site/wwwroot
 
-# Setup databases first
-echo "🗄️  Setting up databases..."
-./azure-db-setup.sh
+# Cache config for production
+php artisan config:cache 2>/dev/null || echo "Config cache skipped"
 
-# Clear any cache issues
-php artisan config:clear 2>/dev/null || echo "Config clear skipped"
-php artisan cache:clear 2>/dev/null || echo "Cache clear skipped"
-php artisan view:clear 2>/dev/null || echo "View clear skipped"
-php artisan route:clear 2>/dev/null || echo "Route clear skipped"
+# Cache routes for production
+php artisan route:cache 2>/dev/null || echo "Route cache skipped"
 
-# Optimize for production
-if [ "$APP_ENV" = "production" ]; then
-    echo "⚡ Production optimizations..."
-    php artisan config:cache 2>/dev/null || echo "Config cache skipped"
-    php artisan route:cache 2>/dev/null || echo "Route cache skipped"
-    php artisan view:cache 2>/dev/null || echo "View cache skipped"
-fi
+# Cache views for production
+php artisan view:cache 2>/dev/null || echo "View cache skipped"
 
-echo "✅ TechBuy startup complete"
+# Migrate database if needed
+php artisan migrate --force 2>/dev/null || echo "Migration skipped"
+
+# Seed database if empty
+php artisan db:seed --force 2>/dev/null || echo "Seeding skipped"
+
+echo "✅ Laravel application ready"
