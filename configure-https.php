@@ -26,7 +26,7 @@ $envContent = file_get_contents('.env');
 
 foreach ($httpsEnvVars as $envVar) {
     list($key, $value) = explode('=', $envVar, 2);
-
+    
     // Check if the key already exists
     if (preg_match("/^{$key}=/m", $envContent)) {
         // Update existing value
