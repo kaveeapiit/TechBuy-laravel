@@ -29,19 +29,19 @@ echo "\n⚙️  Laravel Bootstrap Check:\n";
 try {
     require_once __DIR__ . '/vendor/autoload.php';
     echo "   Autoloader: ✅ Loaded\n";
-    
+
     $app = require_once __DIR__ . '/bootstrap/app.php';
     echo "   App Bootstrap: ✅ Loaded\n";
-    
+
     $kernel = $app->make('Illuminate\Contracts\Console\Kernel');
     $kernel->bootstrap();
     echo "   Kernel Bootstrap: ✅ Loaded\n";
-    
+
     // Test route resolution
     $router = app('router');
     $routes = $router->getRoutes();
     echo "   Routes Loaded: ✅ " . count($routes) . " routes\n";
-    
+
     // Check specific routes
     $testRoutes = ['/login', '/register', '/dashboard', '/products'];
     foreach ($testRoutes as $route) {
@@ -54,7 +54,6 @@ try {
             echo "   Route '$route': ❌ " . $e->getMessage() . "\n";
         }
     }
-    
 } catch (\Exception $e) {
     echo "   ❌ Laravel Bootstrap Error: " . $e->getMessage() . "\n";
 }
@@ -63,14 +62,14 @@ try {
 echo "\n🔄 URL Rewrite Test:\n";
 $testUrls = [
     '/login',
-    '/register', 
+    '/register',
     '/dashboard',
     '/products'
 ];
 
 foreach ($testUrls as $url) {
     echo "   Testing: $url\n";
-    
+
     // Simulate what should happen
     if (!file_exists(__DIR__ . $url) && !is_dir(__DIR__ . $url)) {
         echo "     → Should rewrite to index.php\n";
