@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProductionSeeder::class,
         ]);
-        
+
         // Fallback: try factory seeding if in development
         if (app()->environment('local', 'development')) {
             try {
