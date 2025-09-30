@@ -32,15 +32,25 @@ echo "\n";
 
 // Check environment variables
 echo "3. MongoDB Configuration Check:\n";
-$mongoHost = env('MONGODB_HOST', 'not set');
-$mongoDb = env('MONGODB_DATABASE', 'not set');
-$mongoUser = env('MONGODB_USERNAME', 'not set');
-$mongoPass = env('MONGODB_PASSWORD', 'not set') !== 'not set' ? '***set***' : 'not set';
-
-echo "   MONGODB_HOST: $mongoHost\n";
-echo "   MONGODB_DATABASE: $mongoDb\n";
-echo "   MONGODB_USERNAME: $mongoUser\n";
-echo "   MONGODB_PASSWORD: $mongoPass\n";
+// Load Laravel environment first
+try {
+    require_once __DIR__ . '/vendor/autoload.php';
+    $app = require_once __DIR__ . '/bootstrap/app.php';
+    $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+    
+    $mongoHost = env('MONGODB_HOST', 'not set');
+    $mongoDb = env('MONGODB_DATABASE', 'not set');
+    $mongoUser = env('MONGODB_USERNAME', 'not set');
+    $mongoPass = env('MONGODB_PASSWORD', 'not set') !== 'not set' ? '***set***' : 'not set';
+    
+    echo "   MONGODB_HOST: $mongoHost\n";
+    echo "   MONGODB_DATABASE: $mongoDb\n";
+    echo "   MONGODB_USERNAME: $mongoUser\n";
+    echo "   MONGODB_PASSWORD: $mongoPass\n";
+} catch (\Exception $e) {
+    echo "   ⚠️  Could not load Laravel environment: " . $e->getMessage() . "\n";
+    echo "   💡 Check your .env file and Laravel installation\n";
+}
 echo "\n";
 
 // Try to check MongoDB models
