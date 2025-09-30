@@ -67,7 +67,7 @@ try {
 } catch (\Exception $e) {
     echo "⚠️  MongoDB connection failed: " . $e->getMessage() . "\n";
     echo "💡 This is normal if you don't have a MongoDB server configured\n";
-    
+
     // Check if it's a connection issue or missing server
     if (strpos($e->getMessage(), 'connection refused') !== false) {
         echo "🔧 Issue: No MongoDB server running\n";
