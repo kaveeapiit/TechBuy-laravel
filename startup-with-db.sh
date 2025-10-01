@@ -128,4 +128,3 @@ log ""
 log "📧 Admin Accounts Created:"
 log "   Super Admin: admin@techbuy.com | Password: password123"
 log "   Admin User:  admin2@techbuy.com | Password: password123"
-

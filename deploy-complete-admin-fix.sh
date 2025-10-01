@@ -1,0 +1,46 @@
+#!/bin/bash
+
+echo "🚀 COMPLETE AZURE ADMIN FIX DEPLOYMENT"
+echo "======================================"
+
+echo "🔧 This deployment will:"
+echo "1. ✅ Fix nginx routing (resolves 404 errors)"
+echo "2. ✅ Setup production database with migrations"
+echo "3. ✅ Create admin accounts on Azure database"
+echo "4. ✅ Fix admin authentication issues"
+echo "5. ✅ Clear all caches for fresh start"
+echo ""
+
+# Commit and push the updated startup script
+git add .
+git commit -m "Complete admin fix: database setup + admin accounts creation"
+git push origin main
+
+echo ""
+echo "🚀 DEPLOYMENT PUSHED TO AZURE!"
+echo ""
+echo "📋 WHAT HAPPENS NEXT:"
+echo "1. 🔄 Azure will automatically deploy in 2-3 minutes"
+echo "2. 📊 Database migrations will run automatically"
+echo "3. 👤 Admin accounts will be created automatically"
+echo "4. 🌐 nginx routes will be updated"
+echo ""
+echo "🔍 AFTER DEPLOYMENT, TEST THESE URLs:"
+echo "• Login: https://techbuy-webapp-agbgf2gbgud8apaw.centralindia-01.azurewebsites.net/admin/login"
+echo "• Register: https://techbuy-webapp-agbgf2gbgud8apaw.centralindia-01.azurewebsites.net/admin/register"
+echo ""
+echo "📧 ADMIN ACCOUNTS (will be created on Azure):"
+echo "• Email: admin@techbuy.com | Password: password123 (Super Admin)"
+echo "• Email: admin2@techbuy.com | Password: password123 (Admin)"
+echo ""
+echo "⚠️  IF ISSUES PERSIST:"
+echo "1. Wait 5 minutes for full deployment"
+echo "2. Check Azure logs: App Service → Log stream"
+echo "3. The startup script will show database setup progress"
+echo ""
+echo "🎯 KEY FIXES INCLUDED:"
+echo "✅ Database migrations run on Azure"
+echo "✅ Admin table properly created with constraints"
+echo "✅ Admin accounts seeded into production database"
+echo "✅ Enhanced error logging for debugging"
+echo "✅ nginx routing fixes for all admin pages"
