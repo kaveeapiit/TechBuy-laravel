@@ -7,6 +7,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 
 class AdminAuthController extends Controller
@@ -24,6 +25,13 @@ class AdminAuthController extends Controller
      */
     public function register(Request $request)
     {
+        // Add detailed logging for debugging
+        Log::info('Admin registration attempt', [
+            'request_data' => $request->except('password', 'password_confirmation'),
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ]);
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
@@ -32,6 +40,8 @@ class AdminAuthController extends Controller
         ]);
 
         try {
+            Log::info('Creating admin with validated data', ['email' => $validated['email']]);
+
             $admin = Admin::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -40,11 +50,21 @@ class AdminAuthController extends Controller
                 'is_active' => true,
             ]);
 
+            Log::info('Admin created successfully', ['admin_id' => $admin->id]);
+
             Auth::guard('admin')->login($admin);
+
+            Log::info('Admin logged in successfully');
 
             return redirect()->route('admin.dashboard')->with('success', 'Admin account created successfully!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to create admin account. Please try again.');
+            Log::error('Failed to create admin account', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'validated_data' => $validated
+            ]);
+
+            return back()->withErrors(['registration' => 'Failed to create admin account: ' . $e->getMessage()])->withInput();
         }
     }
 
@@ -61,19 +81,42 @@ class AdminAuthController extends Controller
      */
     public function login(Request $request)
     {
+        Log::info('Admin login attempt', [
+            'email' => $request->email,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ]);
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
-        }
+        try {
+            if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+                $request->session()->regenerate();
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+                $admin = Auth::guard('admin')->user();
+                Log::info('Admin login successful', ['admin_id' => $admin->id, 'email' => $admin->email]);
+
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            Log::warning('Admin login failed - invalid credentials', ['email' => $request->email]);
+
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        } catch (\Exception $e) {
+            Log::error('Admin login error', [
+                'error' => $e->getMessage(),
+                'email' => $request->email
+            ]);
+
+            return back()->withErrors([
+                'email' => 'Login failed due to a system error. Please try again.',
+            ])->onlyInput('email');
+        }
     }
 
     /**
