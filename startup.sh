@@ -68,16 +68,12 @@ log "✅ File permissions set"
 # Laravel optimizations
 log "⚡ Running Laravel optimizations..."
 
-# Configure HTTPS settings for Laravel
-log "🔒 Configuring HTTPS settings..."
-if [ -f "/home/site/wwwroot/configure-https.php" ]; then
-    php /home/site/wwwroot/configure-https.php
-    log "✅ HTTPS configuration applied"
+# Configure Azure CSRF settings
+log "�️ Configuring Azure CSRF settings..."
+if [ -f "/home/site/wwwroot/configure-azure-csrf.php" ]; then
+    php /home/site/wwwroot/configure-azure-csrf.php
+    log "✅ Azure CSRF configuration applied"
 fi
-
-# Clear any existing cache
-php artisan config:clear 2>/dev/null || true
-php artisan route:clear 2>/dev/null || true
 php artisan view:clear 2>/dev/null || true
 php artisan cache:clear 2>/dev/null || true
 

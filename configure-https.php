@@ -35,29 +35,6 @@ if (file_exists($envFile)) {
         echo "   ✅ Added secure cookie setting\n";
     }
 
-    // Add session domain and same site settings for CSRF
-    if (!preg_match('/^SESSION_DOMAIN=/m', $envContent)) {
-        $envContent .= "SESSION_DOMAIN=\${HTTP_HOST}\n";
-        echo "   ✅ Added session domain setting\n";
-    }
-
-    if (!preg_match('/^SESSION_SAME_SITE=/m', $envContent)) {
-        $envContent .= "SESSION_SAME_SITE=lax\n";
-        echo "   ✅ Added session same site setting\n";
-    }
-
-    // Ensure session driver is set correctly
-    if (!preg_match('/^SESSION_DRIVER=/m', $envContent)) {
-        $envContent .= "SESSION_DRIVER=file\n";
-        echo "   ✅ Added session driver setting\n";
-    }
-
-    // Set session lifetime
-    if (!preg_match('/^SESSION_LIFETIME=/m', $envContent)) {
-        $envContent .= "SESSION_LIFETIME=120\n";
-        echo "   ✅ Added session lifetime setting\n";
-    }
-
     file_put_contents($envFile, $envContent);
     echo "   ✅ .env file updated successfully\n";
 } else {
@@ -104,25 +81,10 @@ if (file_exists($trustProxiesFile)) {
 // 3. Clear and cache configuration
 echo "🧹 Clearing and caching Laravel configuration...\n";
 
-// Clear all caches to ensure fresh start
+// Clear configuration cache
 exec('php artisan config:clear 2>/dev/null', $output, $return);
 if ($return === 0) {
     echo "   ✅ Configuration cache cleared\n";
-}
-
-exec('php artisan route:clear 2>/dev/null', $output, $return);
-if ($return === 0) {
-    echo "   ✅ Route cache cleared\n";
-}
-
-exec('php artisan view:clear 2>/dev/null', $output, $return);
-if ($return === 0) {
-    echo "   ✅ View cache cleared\n";
-}
-
-exec('php artisan cache:clear 2>/dev/null', $output, $return);
-if ($return === 0) {
-    echo "   ✅ Application cache cleared\n";
 }
 
 // Cache new configuration
@@ -144,41 +106,10 @@ if (function_exists('config')) {
 }
 
 echo "✅ Laravel HTTPS configuration complete!\n";
-
-// 5. Create a specific CSRF configuration fix
-echo "🛡️ Configuring CSRF protection for HTTPS...\n";
-
-// Ensure sessions work with HTTPS
-if (function_exists('config')) {
-    config(['session.secure' => true]);
-    config(['session.http_only' => true]);
-    config(['session.same_site' => 'lax']);
-    echo "   ✅ Session security configured\n";
-
-    // Configure CSRF
-    config(['app.url' => 'https://' . ($_SERVER['HTTP_HOST'] ?? 'localhost')]);
-    echo "   ✅ App URL configured for HTTPS\n";
-}
-
-// Test session functionality
-$sessionTestFile = $laravelRoot . '/storage/framework/sessions/.test';
-@file_put_contents($sessionTestFile, 'test');
-if (file_exists($sessionTestFile)) {
-    unlink($sessionTestFile);
-    echo "   ✅ Session storage is writable\n";
-} else {
-    echo "   ⚠️  Session storage may not be writable\n";
-}
-
 echo "\n🎯 What was configured:\n";
 echo "   ✅ APP_URL set to use HTTPS\n";
 echo "   ✅ TrustProxies configured for Azure load balancer\n";
 echo "   ✅ Secure cookies enabled\n";
-echo "   ✅ Session domain and same-site configured\n";
-echo "   ✅ CSRF protection optimized for HTTPS\n";
-echo "   ✅ All caches cleared and refreshed\n";
-echo "\n🔒 Forms should now submit securely without 419 errors!\n";
-echo "\n⚠️  If 419 errors persist, check that:\n";
-echo "   - Forms include @csrf blade directive\n";
-echo "   - JavaScript includes CSRF token in headers\n";
-echo "   - Session storage directory is writable\n";
+echo "   ✅ Proper forwarded headers handling\n";
+echo "   ✅ Configuration cache refreshed\n";
+echo "\n🔒 Forms should now submit securely without warnings!\n";
