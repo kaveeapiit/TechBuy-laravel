@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "🔧 Azure Laravel Startup with Database Setup"
-echo "============================================="
+echo "🔧 Azure Laravel Startup with File Storage"
+echo "=========================================="
 
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
@@ -26,6 +26,18 @@ if [ -f "/home/site/wwwroot/nginx.conf" ]; then
     nginx -s reload 2>/dev/null || service nginx restart 2>/dev/null
     log "✅ Nginx configuration applied"
 fi
+
+# Set up persistent file storage for uploads
+log "📁 Setting up persistent file storage..."
+mkdir -p /home/LogFiles/storage/products 2>/dev/null || true
+mkdir -p /home/LogFiles/storage/profile-photos 2>/dev/null || true
+mkdir -p /home/LogFiles/storage/uploads 2>/dev/null || true
+chmod -R 755 /home/LogFiles/storage 2>/dev/null || true
+
+# Create symbolic link to persistent storage
+rm -rf /home/site/wwwroot/public/storage 2>/dev/null || true
+ln -sf /home/LogFiles/storage /home/site/wwwroot/public/storage 2>/dev/null || true
+log "✅ Persistent storage configured"
 
 # Set basic permissions
 chmod -R 755 /home/site/wwwroot 2>/dev/null || true
