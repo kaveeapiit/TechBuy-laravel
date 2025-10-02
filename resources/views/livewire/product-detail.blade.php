@@ -10,6 +10,11 @@
         <!-- Product Images -->
         <div>
             <div class="aspect-w-1 aspect-h-1 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden mb-4 tech-card">
+                @if($product->images && is_array($product->images) && count($product->images) > 0)
+                <img src="{{ Storage::url($product->images[$selectedImage] ?? $product->images[0]) }}"
+                    alt="{{ $product->name }}"
+                    class="w-full h-96 object-cover">
+                @else
                 <div class="flex items-center justify-center h-96 text-8xl">
                     @if(str_contains(strtolower($product->name), 'iphone'))
                     📱
@@ -21,6 +26,7 @@
                     💻
                     @endif
                 </div>
+                @endif
             </div>
 
             <!-- Thumbnail Images -->
@@ -29,17 +35,9 @@
                 @foreach($product->images as $index => $image)
                 <button wire:click="selectImage({{ $index }})"
                     class="aspect-w-1 aspect-h-1 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden border-2 {{ $selectedImage === $index ? 'border-primary-500 shadow-glow' : 'border-primary-700/30' }} transition-all duration-300">
-                    <div class="flex items-center justify-center h-20 text-2xl">
-                        @if(str_contains(strtolower($product->name), 'iphone'))
-                        📱
-                        @elseif(str_contains(strtolower($product->name), 'macbook'))
-                        💻
-                        @elseif(str_contains(strtolower($product->name), 'samsung') || str_contains(strtolower($product->name), 'pixel'))
-                        📱
-                        @else
-                        💻
-                        @endif
-                    </div>
+                    <img src="{{ Storage::url($image) }}"
+                        alt="{{ $product->name }} - Image {{ $index + 1 }}"
+                        class="w-full h-20 object-cover">
                 </button>
                 @endforeach
             </div>
