@@ -40,8 +40,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            // In Azure, we use the root/storage directory directly
-            'root' => env('AZURE_STORAGE_PATH', public_path('storage')),
+            // Use Azure persistent storage path for uploads
+            'root' => env('AZURE_STORAGE_PATH', '/home/LogFiles/storage'),
             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
