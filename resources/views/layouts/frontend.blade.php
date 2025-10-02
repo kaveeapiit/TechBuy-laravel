@@ -86,6 +86,7 @@
                     <a href="{{ route('category', 'macbooks') }}" class="text-gray-300 hover:text-primary-400 transition-colors duration-300 font-display">MacBooks</a>
                     <a href="{{ route('category', 'android-phones') }}" class="text-gray-300 hover:text-primary-400 transition-colors duration-300 font-display">Android</a>
                     <a href="{{ route('category', 'laptops') }}" class="text-gray-300 hover:text-primary-400 transition-colors duration-300 font-display">Laptops</a>
+                    <a href="{{ route('contact.index') }}" class="text-gray-300 hover:text-primary-400 transition-colors duration-300 font-display">Contact Us</a>
                 </div>
             </nav>
         </div>
@@ -115,7 +116,7 @@
                         <li><a href="{{ route('home') }}" class="hover:text-primary-400 transition-colors duration-300">Home</a></li>
                         <li><a href="{{ route('products') }}" class="hover:text-primary-400 transition-colors duration-300">Products</a></li>
                         <li><a href="#" class="hover:text-primary-400 transition-colors duration-300">About Us</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition-colors duration-300">Contact</a></li>
+                        <li><a href="{{ route('contact.index') }}" class="hover:text-primary-400 transition-colors duration-300">Contact</a></li>
                     </ul>
                 </div>
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PreOrderController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -12,6 +14,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [HomeController::class, 'products'])->name('products');
 Route::get('/category/{slug}', [HomeController::class, 'category'])->name('category');
 Route::get('/product/{slug}', [HomeController::class, 'product'])->name('product');
+
+// Contact Us Routes
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact/message', [ContactController::class, 'sendMessage'])->name('contact.send-message');
+Route::post('/contact/preorder', [ContactController::class, 'storePreOrder'])->name('contact.preorder.store');
 
 Route::middleware([
     'auth:sanctum',
@@ -54,6 +61,16 @@ Route::middleware([
         // Order History
         Route::get('/orders', [UserController::class, 'orders'])->name('orders');
         Route::get('/orders/{orderNumber}', [UserController::class, 'orderDetails'])->name('order-details');
+
+        // Pre-orders Management (MongoDB CRUD)
+        Route::get('/preorders', [PreOrderController::class, 'index'])->name('preorders.index');
+        Route::get('/preorders/create', [PreOrderController::class, 'create'])->name('preorders.create');
+        Route::post('/preorders', [PreOrderController::class, 'store'])->name('preorders.store');
+        Route::get('/preorders/{id}', [PreOrderController::class, 'show'])->name('preorders.show');
+        Route::get('/preorders/{id}/edit', [PreOrderController::class, 'edit'])->name('preorders.edit');
+        Route::put('/preorders/{id}', [PreOrderController::class, 'update'])->name('preorders.update');
+        Route::delete('/preorders/{id}', [PreOrderController::class, 'destroy'])->name('preorders.destroy');
+        Route::patch('/preorders/{id}/cancel', [PreOrderController::class, 'cancel'])->name('preorders.cancel');
     });
 });
 
