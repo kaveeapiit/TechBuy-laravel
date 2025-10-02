@@ -21,6 +21,9 @@
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')" class="nav-link">
                         {{ __('Shop') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('contact.index') }}" :active="request()->routeIs('contact.*')" class="nav-link">
+                        {{ __('Contact Us') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -38,6 +41,7 @@
                 @endauth
 
                 <!-- Teams Dropdown -->
+                @auth
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="60">
@@ -88,8 +92,10 @@
                     </x-dropdown>
                 </div>
                 @endif
+                @endauth
 
                 <!-- Settings Dropdown -->
+                @auth
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -120,6 +126,10 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link href="{{ route('user.preorders.index') }}">
+                                {{ __('My Pre-Orders') }}
+                            </x-dropdown-link>
+
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                             <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                 {{ __('API Tokens') }}
@@ -140,6 +150,19 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
+                @endauth
+
+                <!-- Guest Links -->
+                @guest
+                <div class="hidden space-x-4 sm:flex sm:items-center">
+                    <a href="{{ route('login') }}" class="text-gray-300 hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300">
+                        {{ __('Login') }}
+                    </a>
+                    <a href="{{ route('register') }}" class="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-primary-600 hover:to-accent-600 transition-all duration-300">
+                        {{ __('Register') }}
+                    </a>
+                </div>
+                @endguest
             </div>
 
             <!-- Hamburger -->
@@ -170,6 +193,12 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+                {{ __('Shop') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('contact.index') }}" :active="request()->routeIs('contact.*')">
+                {{ __('Contact Us') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -191,6 +220,10 @@
                 <!-- Account Management -->
                 <x-responsive-nav-link href="/profile" :active="request()->routeIs('user.profile')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link href="{{ route('user.preorders.index') }}" :active="request()->routeIs('user.preorders.*')">
+                    {{ __('My Pre-Orders') }}
                 </x-responsive-nav-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
