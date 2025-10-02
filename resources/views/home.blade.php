@@ -120,6 +120,11 @@
                     <span class="absolute top-3 left-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white px-3 py-1 text-xs rounded-full z-10 font-mono font-bold">
                         New
                     </span>
+                    @if($product->images && is_array($product->images) && count($product->images) > 0)
+                    <img src="{{ Storage::url($product->images[0]) }}"
+                        alt="{{ $product->name }}"
+                        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                    @else
                     <div class="flex items-center justify-center h-48 bg-gradient-to-br from-gray-800 to-gray-900 text-4xl group-hover:from-gray-700 group-hover:to-gray-800 transition-all duration-300">
                         @if(str_contains(strtolower($product->name), 'iphone'))
                         📱
@@ -131,6 +136,7 @@
                         💻
                         @endif
                     </div>
+                    @endif
                 </div>
                 <div class="p-4">
                     <h3 class="font-semibold text-white mb-2 font-display group-hover:text-primary-400 transition-colors duration-300">{{ $product->name }}</h3>
