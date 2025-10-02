@@ -9,6 +9,28 @@ log() {
 
 log "Starting Azure Laravel configuration..."
 
+# Install MongoDB PHP extension if not already installed
+log "🔌 Checking MongoDB PHP extension..."
+if ! php -m | grep -q mongodb; then
+    log "📦 Installing MongoDB PHP extension..."
+
+    # Update package list
+    apt-get update -y
+
+    # Install required packages
+    apt-get install -y pkg-config libssl-dev libsasl2-dev
+
+    # Install MongoDB extension via PECL
+    pecl install mongodb
+
+    # Enable the extension
+    echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
+
+    log "✅ MongoDB PHP extension installed"
+else
+    log "✅ MongoDB PHP extension already installed"
+fi
+
 # Set working directory
 cd /home/site/wwwroot
 

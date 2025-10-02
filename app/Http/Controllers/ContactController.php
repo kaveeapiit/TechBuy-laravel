@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Mongo\PreOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -30,9 +31,31 @@ class ContactController extends Controller
         ]);
 
         try {
-            // Check if MongoDB is available
+            // Enhanced MongoDB availability check
             if (!extension_loaded('mongodb')) {
-                return back()->with('error', 'Pre-order system is currently unavailable. Please try again later.');
+                Log::error('MongoDB extension not loaded');
+                return back()->with('error', 'Pre-order system is currently unavailable (Extension not loaded). Please try again later.');
+            }
+
+            // Test MongoDB connection through Laravel's MongoDB package
+            try {
+                $connectionString = config('database.connections.mongodb.dsn') ??
+                    env('MONGODB_CONNECTION_STRING');
+
+                if (!$connectionString) {
+                    Log::error('MongoDB connection string not configured');
+                    return back()->with('error', 'Pre-order system is currently unavailable (No connection string). Please try again later.');
+                }
+
+                // Test connection by attempting to create a simple query
+                DB::connection('mongodb')->table('connection_test')->get();
+            } catch (\Exception $e) {
+                Log::error('MongoDB connection test failed', [
+                    'error' => $e->getMessage(),
+                    'connection_string_exists' => !empty($connectionString),
+                    'mongodb_extension' => extension_loaded('mongodb'),
+                ]);
+                return back()->with('error', 'Pre-order system is currently unavailable (Connection failed). Please try again later.');
             }
 
             $preOrder = PreOrder::create([
