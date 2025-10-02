@@ -1,214 +1,68 @@
-# Azure Deployment Checklist for TechBuy Laravel App
+# Azure Deployment Checklist for MongoDB Support
 
-Use this checklist to ensure you don't miss any steps during deployment.
+## ✅ Files Updated
+- [x] `startup.sh` - MongoDB extension installation
+- [x] `config/database.php` - Azure Cosmos DB configuration
+- [x] `install-mongodb-extension.sh` - Alternative extension installer
+- [x] `verify-azure-deployment.sh` - Deployment verification
 
-## Pre-Deployment Checklist ✅
+## 🔧 Azure Portal Configuration Required
 
-### Azure Account Setup
-
--   [ ] Create Azure account and verify
--   [ ] Access Azure Portal successfully
--   [ ] Create Resource Group (`techbuy-rg`)
-
-### Azure Resources Creation
-
--   [ ] Create App Service Plan (`techbuy-app-plan`)
--   [ ] Create Web App (`techbuy-webapp`)
--   [ ] Create PostgreSQL Flexible Server (`techbuy-postgres-server`)
--   [ ] Create Cosmos DB with MongoDB API (`techbuy-cosmos-mongo`)
-
-### Database Configuration
-
--   [ ] Configure PostgreSQL firewall rules
--   [ ] Configure Cosmos DB networking
--   [ ] Test database connections
-
-### Code Preparation
-
--   [ ] Run `composer install --no-dev --optimize-autoloader`
--   [ ] Run `npm install && npm run build`
--   [ ] Push code to GitHub repository
--   [ ] Verify all files are committed
-
-## Deployment Checklist ✅
-
-### App Service Configuration
-
--   [ ] Set PHP version to 8.2
--   [ ] Configure deployment from GitHub
--   [ ] Set up GitHub Actions workflow
--   [ ] Add all environment variables:
-    -   [ ] `APP_NAME` = TechBuy
-    -   [ ] `APP_ENV` = production
-    -   [ ] `APP_DEBUG` = false
-    -   [ ] `APP_URL` = https://techbuy-webapp.azurewebsites.net
-    -   [ ] `APP_KEY` = (generate using `php artisan key:generate --show`)
-    -   [ ] `DB_CONNECTION` = pgsql
-    -   [ ] `DB_HOST` = techbuy-postgres-server.postgres.database.azure.com
-    -   [ ] `DB_PORT` = 5432
-    -   [ ] `DB_DATABASE` = postgres
-    -   [ ] `DB_USERNAME` = techbuyadmin
-    -   [ ] `DB_PASSWORD` = (your PostgreSQL password)
-    -   [ ] `MONGODB_CONNECTION` = (Cosmos DB connection string)
-    -   [ ] `MONGODB_DATABASE` = techbuy_mongo
-    -   [ ] `SESSION_DRIVER` = database
-    -   [ ] `CACHE_DRIVER` = database
-    -   [ ] `QUEUE_CONNECTION` = database
-    -   [ ] `LOG_CHANNEL` = errorlog
-    -   [ ] `LOG_LEVEL` = error
-
-### Web Server Configuration
-
--   [ ] Create `.htaccess` file for URL rewriting
--   [ ] Set startup command
--   [ ] Configure document root
-
-### Database Setup
-
--   [ ] Run migrations: `php artisan migrate --force`
--   [ ] Run seeders: `php artisan db:seed --force`
--   [ ] Verify database tables created
-
-## Post-Deployment Checklist ✅
-
-### Testing
-
--   [ ] Website loads successfully
--   [ ] Test user registration
--   [ ] Test user login
--   [ ] Test product browsing
--   [ ] Test shopping cart functionality
--   [ ] Test checkout process
--   [ ] Verify both databases working (PostgreSQL & MongoDB)
-
-### Security Configuration
-
--   [ ] Enable HTTPS Only
--   [ ] Configure custom domain (if applicable)
--   [ ] Set up SSL certificate
--   [ ] Review firewall rules
--   [ ] Update SANCTUM_STATEFUL_DOMAINS
-
-### Performance & Monitoring
-
--   [ ] Set up Application Insights (optional)
--   [ ] Configure auto-scaling rules
--   [ ] Set up log monitoring
--   [ ] Test application performance
-
-### Backup & Maintenance
-
--   [ ] Configure automatic backups
--   [ ] Set up cost monitoring alerts
--   [ ] Document admin credentials securely
--   [ ] Create maintenance schedule
-
-## Troubleshooting Quick Fixes ⚠️
-
-### Common Issues and Solutions
-
-**500 Internal Server Error:**
-
--   [ ] Check application logs in Azure Portal
--   [ ] Verify APP_KEY is set and valid
--   [ ] Ensure all required environment variables are set
--   [ ] Run `php artisan config:clear` in Console
-
-**Database Connection Error:**
-
--   [ ] Verify database server is running
--   [ ] Check firewall rules allow App Service
--   [ ] Validate connection string format
--   [ ] Test connection from App Service Console
-
-**Assets Not Loading:**
-
--   [ ] Ensure `npm run build` completed successfully
--   [ ] Check if `public/build` folder exists
--   [ ] Verify APP_URL matches actual domain
-
-**Permission Errors:**
-
--   [ ] Check storage folder permissions
--   [ ] Verify bootstrap/cache folder permissions
--   [ ] Run storage:link if needed
-
-## Environment Variables Reference Card 📋
-
-Keep this handy during deployment:
-
+### 1. App Service Settings
+**Configuration > General Settings > Startup Command:**
 ```
-APP_NAME=TechBuy
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://YOUR_APP_NAME.azurewebsites.net
-APP_KEY=base64:GENERATED_KEY_HERE
-
-DB_CONNECTION=pgsql
-DB_HOST=YOUR_POSTGRES_SERVER.postgres.database.azure.com
-DB_PORT=5432
-DB_DATABASE=postgres
-DB_USERNAME=YOUR_ADMIN_USERNAME
-DB_PASSWORD=YOUR_STRONG_PASSWORD
-
-MONGODB_CONNECTION=YOUR_COSMOS_CONNECTION_STRING
-MONGODB_DATABASE=techbuy_mongo
-
-SESSION_DRIVER=database
-CACHE_DRIVER=database
-QUEUE_CONNECTION=database
-LOG_CHANNEL=errorlog
+/home/site/wwwroot/startup.sh
 ```
 
-## Important URLs to Bookmark 🔗
+### 2. Environment Variables
+**Configuration > Application Settings - Add these:**
 
--   Azure Portal: https://portal.azure.com/
--   Your Web App: https://techbuy-webapp.azurewebsites.net
--   GitHub Repository: https://github.com/yourusername/techbuy-laravel
--   Azure Documentation: https://docs.microsoft.com/en-us/azure/
+| Key | Value | Description |
+|-----|-------|-------------|
+| `MONGODB_CONNECTION_STRING` | `mongodb://[account]:[key]@[account].mongo.cosmos.azure.com:10255/[db]?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@[account]@` | Cosmos DB connection string |
+| `MONGODB_DATABASE` | `techbuy_mongodb` | Database name |
+| `MONGODB_SSL` | `true` | Enable SSL |
+| `MONGODB_REPLICA_SET` | `globaldb` | Cosmos DB replica set |
+| `MONGODB_RETRY_WRITES` | `false` | Disable retry writes for Cosmos DB |
+| `SCM_DO_BUILD_DURING_DEPLOYMENT` | `true` | Enable build during deployment |
+| `WEBSITES_ENABLE_APP_SERVICE_STORAGE` | `true` | Enable storage |
 
-## Cost Management 💰
+### 3. Cosmos DB MongoDB API Setup
+1. Create Azure Cosmos DB account with MongoDB API
+2. Create database: `techbuy_mongodb`
+3. Copy connection string from Settings > Connection String
+4. Add connection string to App Service environment variables
 
--   [ ] Monitor monthly costs in Azure Cost Management
--   [ ] Set up budget alerts
--   [ ] Review resource utilization regularly
--   [ ] Consider Reserved Instances for production
+## 🚀 Deployment Steps
 
-## Security Best Practices 🔒
+1. **Deploy code with updated files**
+2. **Set environment variables in Azure Portal**
+3. **Restart App Service**
+4. **SSH into App Service and run verification:**
+   ```bash
+   cd /home/site/wwwroot
+   ./verify-azure-deployment.sh
+   ```
 
--   [ ] Use strong passwords for all services
--   [ ] Enable two-factor authentication on Azure account
--   [ ] Regularly rotate database passwords
--   [ ] Keep Laravel and dependencies updated
--   [ ] Monitor security recommendations in Security Center
+## 🔍 Troubleshooting
 
-## Success Indicators ✨
+### If MongoDB extension fails to install:
+```bash
+# SSH into App Service
+./install-mongodb-extension.sh
+```
 
-Your deployment is successful when:
+### If connection still fails:
+1. Check Cosmos DB firewall settings (allow Azure services)
+2. Verify connection string format
+3. Check App Service logs: **Monitoring > Log stream**
 
--   [ ] Application loads without errors
--   [ ] Users can register and login
--   [ ] Database operations work correctly
--   [ ] SSL certificate is active
--   [ ] Performance is acceptable
--   [ ] Logs show no critical errors
+### Test preorder functionality:
+1. Visit: `https://your-app.azurewebsites.net/contact`
+2. Submit a preorder
+3. Check for success message
 
-## Emergency Contacts & Resources 📞
-
--   Azure Support: Available in Azure Portal
--   Laravel Documentation: https://laravel.com/docs
--   Your GitHub Repository: (your-repo-url)
--   Database Admin Credentials: (store securely)
-
----
-
-**🎉 Congratulations!**
-Once all items are checked, your TechBuy Laravel application is successfully deployed on Azure!
-
-**Next Steps:**
-
-1. Share the URL with stakeholders
-2. Set up monitoring and alerts
-3. Plan for regular maintenance
-4. Consider implementing CI/CD improvements
-5. Monitor performance and optimize as needed
+## 📞 Support Resources
+- Azure App Service SSH: Portal > Development Tools > SSH
+- Cosmos DB Metrics: Portal > Monitoring > Metrics
+- App Service Logs: Portal > Monitoring > Log stream

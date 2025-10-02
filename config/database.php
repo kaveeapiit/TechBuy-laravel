@@ -115,6 +115,7 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
+            'dsn' => env('MONGODB_CONNECTION_STRING'),
             'host' => env('MONGODB_HOST', '127.0.0.1'),
             'port' => env('MONGODB_PORT', 27017),
             'database' => env('MONGODB_DATABASE', 'techbuy_products'),
@@ -122,6 +123,11 @@ return [
             'password' => env('MONGODB_PASSWORD', ''),
             'options' => [
                 'appName' => 'TechBuy Products',
+                'ssl' => env('MONGODB_SSL', true),
+                'replicaSet' => env('MONGODB_REPLICA_SET'),
+                'retryWrites' => env('MONGODB_RETRY_WRITES', false),
+                'w' => env('MONGODB_WRITE_CONCERN', 'majority'),
+                'maxIdleTimeMS' => env('MONGODB_MAX_IDLE_TIME', 120000),
             ],
         ],
 
