@@ -4,15 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-black via-gray-900 to-black text-            <div class=" text-center group">
-    <div class="w-16 h-16 bg-gradient-to-r from-accent-500 to-primary-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow group-hover:shadow-glow-lg transition-all duration-300 transform group-hover:scale-110">
-        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
-        </svg>
-    </div>
-    <h3 class="text-lg font-semibold mb-2 text-white font-display">Easy Returns</h3>
-    <p class="text-gray-400 font-mono">30-day return policy on all products</p>
-    </div>verflow-hidden">
+<section class="relative bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
     <!-- Tech Grid Background -->
     <div class="absolute inset-0 opacity-20">
         <div class="tech-grid"></div>
@@ -225,7 +217,9 @@
             </div>
             <div class="text-center group">
                 <div class="w-16 h-16 bg-gradient-to-r from-accent-500 to-primary-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow group-hover:shadow-glow-lg transition-all duration-300 transform group-hover:scale-110">
-                    <span class="text-2xl">↩️</span>
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                    </svg>
                 </div>
                 <h3 class="text-lg font-semibold mb-2 text-white font-display">Easy Returns</h3>
                 <p class="text-gray-400 font-mono">30-day return policy on all products</p>
